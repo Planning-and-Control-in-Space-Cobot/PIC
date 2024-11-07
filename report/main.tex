@@ -256,4 +256,133 @@ the real-time iteration}
         \subsection{Conclusion}
         This paper presents a successful implementation of an NMPC strategy for spacecraft rendezvous and docking with a rotating target. The strategy effectively handles dynamic constraints and ensures safe, collision-free docking. Both simulation and experimental results validate the real-time capability of the NMPC approach, making it a promising solution for future autonomous space missions.
 
+    \section{Cooperation and Coordination Transportation for Nonholonomic Mobile Manipulators}
+
+        \subsection{Introduction}
+        In recent years, multirobot cooperative systems have become critical in applications such as industrial assembly, logistics, and environmental exploration. Nonholonomic mobile manipulators (NMMs) combine the dexterity of robotic arms with the mobility of wheeled platforms, providing enhanced flexibility and efficiency in cooperative tasks. This paper addresses the problem of coordinating multiple NMMs to transport objects cooperatively in constrained environments with obstacles. The proposed solution utilizes a distributed model predictive control (MPC) strategy that ensures cooperation while satisfying system dynamics, obstacle avoidance, and control constraints.
+        
+        \subsection{Main Contributions}
+        The main contributions of the paper are as follows:
+        \begin{enumerate}
+            \item \textbf{Decoupling Dynamics:} The dynamics of the NMMs are decoupled into task-space and null-space motions. The task-space handles the cooperative transportation of the object, while the null-space performs obstacle avoidance.
+            \item \textbf{Distributed MPC Framework:} A distributed MPC approach is developed, which solves an optimization problem for each NMM independently, ensuring that all NMMs stay synchronized during transportation.
+            \item \textbf{General Projection Neural Network (GPNN) Optimization:} To improve computational efficiency, the paper introduces a GPNN-based method to solve the distributed MPC problem in real time.
+            \item \textbf{Stability Guarantees:} The paper provides a sufficient condition to guarantee the stability of the closed-loop system, ensuring the reliability of the proposed transportation strategy.
+        \end{enumerate}
+        
+        \subsection{Problem Formulation}
+        The NMMs are modeled using Euler-Lagrange equations, with the dynamics decoupled into task-space (end-effector) and null-space (mobile base) motions. Task-space handles the object’s movement, while null-space focuses on obstacle avoidance. The control problem is framed as a distributed optimization task, where each NMM optimizes its control inputs while accounting for neighboring NMMs.
+        
+        \subsection{Path Planning and Synchronization}
+        The paper employs a modified virtual structure approach for path planning, ensuring that NMMs follow predefined paths. The virtual structure helps maintain coordinated formations during transportation. An update law for path parameters is introduced, enabling synchronization of both position and velocity among the NMMs. 
+        
+        \subsection{Distributed MPC and GPNN-Based Optimization}
+        The distributed MPC framework optimizes control inputs over a finite prediction horizon, allowing each NMM to minimize its tracking error while satisfying system constraints. The optimization problem is solved using GPNN, a method chosen for its computational efficiency in handling real-time constraints.
+        
+        \subsection{Simulation Results}
+        Simulation results show that the proposed distributed MPC strategy effectively coordinates multiple NMMs for object transportation, even in the presence of obstacles and disturbances. The NMMs' positions and velocities are synchronized, and the control strategy demonstrates stability and robustness. 
+        
+        \subsection{Conclusion}
+        This paper proposes a novel method for coordinating nonholonomic mobile manipulators in a constrained workspace using a distributed MPC strategy. By decoupling task-space and null-space dynamics and employing the GPNN-based optimization technique, the strategy ensures robust and efficient cooperative transportation. Future work will address dynamic obstacle avoidance and model robustness in real-world scenarios.
+
+\section{On the Accuracy of Inertial Parameter Estimation of a Free-Flying
+Robot While Grasping an Object}
+
+
+    \subsection{Introduction}
+    This paper addresses the problem of estimating the inertial parameters of a free-flying space robot that has grasped an object of unknown properties. Inertial parameters such as mass, center of mass, and the inertia tensor are critical for model-based control tasks, especially in space environments. The paper extends previous work by exploring the factors that affect the accuracy of these estimates.
+
+    \subsection{Dynamics of a Free-Flying System}
+    In this section, the dynamics of the free-flying robot system are introduced. The robot is modeled as a rigid body with an unknown object attached to it. The arm of the robot is considered static, and only the inertial parameters of the entire system need to be estimated.
+    \subsubsection{Rigid-body Dynamics}
+    The rigid-body dynamics are governed by Newton-Euler equations, with external forces and moments represented as inputs. These inputs influence the center of mass and angular velocity of the robot-object system.
+
+    \subsection{Estimation of Parameters}
+    The inertial parameters are estimated using a least squares approach, where measurements of the system's motion are used to fit the model's parameters.
+    \subsubsection{Excitation Trajectory}
+    The excitation trajectory for parameter estimation is designed using a truncated Fourier series to ensure that sufficient information is gathered from the measurements.
+    \subsubsection{Generation of the Excitation Trajectory}
+    The Fourier series coefficients are optimized to create an excitation trajectory that maximizes the accuracy of the estimates while considering the robot's actuation limits.
+    \subsubsection{Executing the Generated Trajectory}
+    A Non-linear Model Predictive Control (NMPC) framework is used to track the generated trajectory, ensuring that the robot follows the desired motion within its physical constraints.
+
+    \subsection{Processing of Measured Data}
+    To ensure the accuracy of the parameter estimates, measured data is processed to remove noise and filter out unwanted harmonics.
+    \subsubsection{Noise Filtering}
+    Noise is reduced by averaging multiple cycles of the excitation trajectory and filtering out high-frequency harmonics that are not part of the intended motion.
+    \subsubsection{Estimating Fourier Coefficients}
+    The Fourier coefficients of the filtered measurements are calculated to fit the data accurately, enabling the subsequent parameter estimation process.
+    \subsubsection{Finding Parameter Estimates}
+    The least squares solution is used to estimate the inertial parameters based on the processed measurement data.
+    \subsubsection{Selecting the Number of Harmonics}
+    The optimal number of harmonics is selected based on the least squares residual error, ensuring that noise is filtered effectively without losing valuable information.
+
+    \subsection{Simulation Results}
+    The proposed method is validated through simulations of the Space CoBot free-flyer robot.
+    \subsubsection{The Space CoBot}
+    The Space CoBot is a free-flying robot designed to operate inside space stations, such as the International Space Station. It is equipped with six motors for holonomic motion, allowing it to assist astronauts with various tasks.
+    \subsubsection{Experimental Conditions}
+    Simulations are conducted under different conditions, including various loads and excitation trajectories, to evaluate the accuracy of the parameter estimates.
+    \subsubsection{Validating the Method of Harmonics Selection}
+    The method for selecting the number of harmonics is validated by comparing the estimation errors with different harmonic counts.
+    \subsubsection{Comparison of Criteria for Generating Excitation}
+    Two criteria for generating excitation trajectories are compared: minimizing the condition number and maximizing the information matrix. Results show that minimizing the condition number produces more accurate estimates.
+    \subsubsection{The Effect of Saturation on Accuracy of Estimates}
+    The effect of input saturation is analyzed, showing that higher levels of saturation lead to reduced accuracy in the parameter estimates.
+    \subsubsection{Improving the Accuracy of the Estimates}
+    Slower excitation trajectories are shown to improve the accuracy of the estimates by reducing the impact of saturation and allowing more precise tracking.
+    keep
+
+\section{The True Role of Accelerometer Feedback in Quadrotor Control}
+
+    \subsection{Introduction}
+    Quadrotors are widely used in UAV (Unmanned Aerial Vehicle) applications due to their mechanical simplicity and maneuverability. However, accurately controlling their flight dynamics, especially for hovering, requires a better understanding of the forces and moments acting on the vehicle. In particular, inertial sensors such as accelerometers and gyroscopes are vital for stabilization. Existing models tend to oversimplify aerodynamic effects, considering only forces proportional to the square of propeller velocities, which leads to contradictions in the predicted behavior of accelerometers.
+
+    \subsection{Revisited Quadrotor Model}
+
+    The authors propose a more detailed quadrotor model that includes rotor drag and linear velocity-dependent terms. The key innovation in this model is the inclusion of additional aerodynamic terms, such as forces proportional to both propeller angular velocity and the quadrotor's linear velocity. This leads to more accurate predictions of accelerometer measurements.
+
+    In contrast to previous models, which imply that longitudinal and lateral accelerometer readings should be zero in hover, the revised model shows that rotor drag causes non-zero accelerations, which explains the discrepancy between theory and experimental data.
+
+    \subsection{Experimental Validation}
+
+    The model was validated through experiments using a custom-built quadrotor. Flight data were collected during repeated back-and-forth translations at constant altitude. The results confirmed the presence of rotor drag and validated the proposed model’s prediction of accelerometer behavior. Traditional models could not account for this, leading to significant differences between predicted and measured accelerations.
+
+    \subsection{Implications for Control Schemes}
+
+    The paper further discusses how the revised model affects control schemes that rely on accelerometer feedback. Most existing controllers use accelerometer data in simplified ways, either assuming no accelerations or using ad hoc sensor fusion techniques that are not grounded in a physically accurate model. By incorporating rotor drag, the authors show that accelerometer-based controllers can achieve better performance, especially in hovering and slow flight conditions.
+
+    \subsection{Conclusion}
+
+    This paper provides a significant revision to the standard quadrotor model, showing that rotor drag and other aerodynamic effects are essential for explaining accelerometer readings and improving control algorithms. The experimental validation supports the model’s predictions, and its implications for control design suggest that more accurate models can lead to improved UAV stability and performance, particularly in hovering tasks.
+
+    \section{Heterogeneous Formation Control of Multiple Rotorcrafts with Unknown Dynamics using Reinforcement Learning \cite{liu2019heterogeneous}}
+    In this paper, Liu et al. propose a distributed, model-free reinforcement learning (RL) approach for leader-follower formation control of heterogeneous rotorcraft systems. Formation control of unmanned aerial vehicles (UAVs) has gained importance due to its applications in communication relay, surveillance, and large-scale search and rescue operations. This work tackles the complexities introduced by heterogeneous systems, where each rotorcraft has different dynamics and load configurations, which were traditionally handled by model-based methods that require precise dynamic models. The novelty of this approach lies in handling unknown system dynamics and uncertainties, which are common in real-world applications.
+    
+    The authors first formulate the formation control problem as an optimal output regulation problem. A discounted performance function is introduced, ensuring that tracking errors converge to zero asymptotically. The reinforcement learning algorithm developed is off-policy and operates online, allowing the control policy to improve with data generated during the system’s trajectory. This contrasts with centralized approaches, which require global information about all agents in the system.
+    
+    The formation system includes a virtual leader and multiple followers, with the followers adjusting their dynamics based on local interactions. The communication between agents is modeled using a weighted directed graph, where only limited knowledge of each agent's neighbors is required, making the system robust and scalable. The performance of the proposed controller is validated through simulations, showing that the RL-based controller can achieve optimal tracking and formation without requiring prior dynamic models.
+    
+    This paper contributes significantly to the field by providing a distributed control strategy that can handle heterogeneous systems with unknown dynamics. The approach is versatile and applicable to various multi-agent systems, where heterogeneity and uncertainty are inherent. The method is computationally efficient and practical, requiring only local interactions, which simplifies implementation in large-scale systems.
+    
+    \section{Swarm Tracking Control for Flocking of a Multi-Agent System \cite{joelianto2012swarm}}
+    In this paper, Joelianto and Sagala address the challenge of flocking control for multi-agent systems, specifically applied to small-scale helicopter models. Flocking is a behavior observed in nature, where groups of birds or fish move together in cohesive patterns. In engineering, replicating such behaviors in autonomous systems is useful for tasks like surveillance, reconnaissance, and rescue missions. The authors propose a novel control method for flocking based on swarm tracking, where a group of UAVs follows a virtual trajectory without a designated leader. This approach eliminates the need for a single leader to coordinate the entire group, allowing the system to be more resilient and adaptive.
+    
+    The paper introduces two control loops. The first loop is the swarm controller, which generates a virtual swarm center for the group of UAVs to follow. This controller is designed using a proportional-derivative (PD) control law, taking into account position and velocity errors, as well as artificial potential functions to maintain cohesion among the agents. The second loop is the tracking controller, designed using a linear quadratic regulator (LQR) to track the generated swarm center. This dual-loop system ensures that the UAVs maintain formation while avoiding obstacles and adjusting their paths based on real-time environmental conditions.
+    
+    The UAVs in the system are modeled using a state-space representation, where their dynamics are described as linear systems. The triangular formation, as chosen in the paper, represents a simple and effective shape for the flocking behavior. The authors emphasize the advantages of using small-scale helicopters for these tasks, citing their ability to hover, maneuver in tight spaces, and perform vertical takeoff and landing.
+    
+    Simulation results demonstrate the effectiveness of the control strategy in maintaining a stable formation and successfully tracking the virtual swarm center. The system is robust to disturbances and changes in the environment, which is crucial for real-world applications like firefighting, search and rescue, or military missions. The paper contributes to the growing field of multi-agent control by presenting a method that combines biological inspiration with well-established control techniques, offering a practical solution for UAV flocking.
+    
+    \section{Learning Model Predictive Control for Iterative Tasks: A Data-Driven Control Framework \cite{rosolia2018learning}}
+    Rosolia and Borrelli introduce a Learning Model Predictive Control (LMPC) framework designed to optimize control performance for systems that perform iterative tasks. This framework is particularly applicable in situations where a system must repeat a task multiple times, such as in industrial robots, autonomous vehicles, or bipedal locomotion. Unlike traditional model predictive control (MPC) approaches that rely on predefined reference trajectories, the LMPC method is reference-free and learns from previous task executions. This enables the controller to continuously improve its performance, adapting to system dynamics and environmental changes over time.
+    
+    The LMPC framework operates by collecting data from previous iterations of a task and using that data to construct safe sets and terminal cost functions. These ensure that the system remains stable and that performance does not degrade in subsequent iterations. A key feature of the LMPC approach is that it guarantees non-decreasing performance at each iteration, meaning that the system’s behavior either improves or stays the same with each repetition. This is achieved by using a safe set, which ensures that the system only explores feasible trajectories, and a terminal cost function, which drives the system toward an optimal solution over time.
+    
+    The paper presents the control design for the LMPC framework, including methods for constructing the terminal set and terminal cost function from previous state and input trajectories. This design ensures that the controller remains recursively feasible and that the closed-loop system is asymptotically stable. The authors provide simulation results for two case studies: an infinite-horizon linear quadratic regulator and a minimum-time Dubins car problem. These simulations demonstrate that the LMPC method successfully improves performance over successive iterations while maintaining safety and feasibility constraints.
+    
+    Overall, the paper contributes to the field of iterative learning control by integrating it with model predictive control in a novel way. The LMPC framework allows systems to learn from experience, making it suitable for complex, high-dimensional systems where computing optimal reference trajectories in advance is challenging. This data-driven approach is particularly valuable in applications like autonomous driving or robotics, where systems must continuously adapt to dynamic and unpredictable environments.
+    
+
+        
 \end{document}
