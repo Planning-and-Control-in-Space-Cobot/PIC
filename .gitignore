@@ -1,0 +1,47 @@
+# LaTeX intermediate and output files
+*.aux
+*.bbl
+*.blg
+*.brf
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.fls
+*.fdb_latexmk
+
+# SyncTeX (remove only if you are sure you don't need it)
+*.synctex.gz
+
+# PDFLatex specific
+*.pdf
+
+# LuaLaTex specific
+*.fls
+*.fmt
+*.ttf
+*.otf
+*.synctex(busy)
+
+# Custom for LaTeX editors (optional)
+*.dvi
+*.ps
+
+# Miscellaneous
+*.bak
+*~
+
+# Thumbnails in some editors
+thumbs/
+
