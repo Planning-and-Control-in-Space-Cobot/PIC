@@ -41,7 +41,12 @@
 # Miscellaneous
 *.bak
 *~
-
+*.run.xml
+*.run.bcf
 # Thumbnails in some editors
 thumbs/
+
+!*.tex
+!*.bib
+!Makefile
 
