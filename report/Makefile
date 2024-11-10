@@ -5,7 +5,7 @@ PDF_DIR = PDFs
 BUILD_DIR = build
 
 # Extensions of compilation artifacts to clean up
-TEMP_FILES = *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.bak* *.synctex* indent.log
+TEMP_FILES = *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.bak* *.synctex* indent.log *.bbl *.bcf *.blg *.run.xml *.xdv *.bcf *.bbl-SAVE-ERROR
 
 all: $(PDF_DIR) $(BUILD_DIR) $(TEX_FILES:%=$(PDF_DIR)/%.pdf)
 
