@@ -1,0 +1,69 @@
+# .latexindent.yaml configuration file
+
+# General settings
+defaultIndent: '    '         # 4 spaces for each indentation level
+document_overwrite: 1         # Overwrite the original file
+only_one_backups: 1           # Keep only one backup per file
+
+# Sectioning commands
+section:
+  - section
+  - subsection
+  - subsubsection
+  - paragraph
+  - subparagraph
+
+# Alignment of environments and commands
+env_names_to_align:           # Align content in environments
+  - equation
+  - align
+  - itemize
+  - enumerate
+  - tabular
+  - figure
+  - table
+  - frame
+
+# Handling comments
+always_prepend_new_line_to_comments: 1   # Ensure comments start on a new line
+preserve_indentation_in_comments: 1      # Keep comment indentation intact
+
+# Verbatim environments (no indentation applied)
+verbatimEnvironments:
+  - verbatim
+  - Verbatim
+  - lstlisting
+  - minted
+
+# Custom commands
+commands:
+  - \begin
+  - \end
+  - \item
+  - \includegraphics
+  - \caption
+  - \label
+
+# Itemize and enumerate indentation settings
+itemizeIndent: 2   # Set indentation for items
+enumerateIndent: 2 # Set indentation for enumerations
+
+# Special settings for specific environments (optional)
+specialEnvironments:
+  array:
+    contents:
+      - columnsAlignment: c           # Center align columns in array
+  tabular:
+    contents:
+      - columnsAlignment: lrc         # Left, right, and center alignments in tabular
+
+# Settings for custom alignment rules
+customAlign:
+  - pattern: '\\(.*\\)'
+    alignment: 'center'
+
+# Suppress warnings and logging (optional)
+silent_mode: 1
+logger_mode: 0
+
+

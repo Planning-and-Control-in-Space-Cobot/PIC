@@ -1,0 +1,305 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{changepage}
+\usepackage{xcolor}
+\usepackage{geometry}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{PayloadTransportationResearch.bib}
+
+\geometry{a4paper, margin=1in}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+
+% Title page
+\begin{titlepage}
+	\centering
+	\vspace*{1in}
+	{\Huge \textbf{Summary of Papers Read in the PIC and Classification}} \\
+	\vspace{1.5in}
+	{\large \textbf{André Teixeira}} \\
+	\vfill
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+
+\clearpage
+
+% Sections
+\section{Payload Transportation in Microgravity with Single and Multiple Cooperative Free-Flyer Robots}\label{sec:Correia_Ventura_Payload_Transportation_in_Microgravity}
+This paper\cite{correia2021payload}, authored by Rodrigo Ventura and Rui
+Correia in 2021, was published in the 2021 IEEE International Conference on
+Autonomous Robot Systems and Competitions (ICARSC).
+
+\subsection{Objective}
+The main objective of the paper was to create three simulations in Gazebo: a
+simple robot moving, a robot moving with a payload, and two robots
+cooperatively moving a payload.
+
+To control the robot in Gazebo, a controller node was implemented in ROS,
+enabling communication with the robot.
+
+This paper confirms Equations (1) and (6) of the paper we are creating. It also
+uses the quaternion derivative equation from Trawny's paper.
+
+To generate the trajectories, the Augmented Lagrangian Trajectory Optimizer
+(ALTRO) was used. For the multi-robot simulation, each robot computed the
+optimal actuation via NMPC, only applying the one relevant to itself.
+
+\subsection{Trajectory Generation}
+A feasible reference trajectory is created using an Optimal Control Problem
+(OCP). This trajectory generation is done offline, so compute time is not
+critical.
+
+\subsection{Classification of the Paper}
+This paper is insightful and offers significant work that can be developed for
+my PIC and thesis. Using an OCP for trajectory generation is interesting but
+makes the system complex since it cannot run in real-time. Full knowledge of
+the environment is required, which limits application in dynamic settings like
+the ISS interior.
+
+To extend this work, a dual NMPC approach could be considered: one with a
+larger horizon running at a slower frequency for trajectory generation and
+another with a smaller horizon at a high frequency (around 50 Hz) for real-time
+control.
+
+\textbf{Relevance Rating: 10/10}
+
+\section{Decentralized Trajectory Optimization for a Fleet of Industrial Mobile Robots}\label{sec:Ines_Silva_Thesis_Decentralized_Trajectory_Optimization}
+This Master's Thesis, authored by Inês Sofia Baptista Silva, with advisors
+Prof. Alberto Vale and Prof. Rodrigo Ventura, was submitted at Instituto
+Superior Técnico in November 2021.
+
+\subsection{Objective}
+The thesis aimed to develop a decentralized trajectory optimizer for a fleet of
+industrial mobile (2D) robots to perform cooperative tasks without collisions
+with each other or obstacles.
+
+\subsection{Trajectory}
+The trajectory creation was divided into two steps: trajectory generation and
+trajectory optimization. The generation was sequential, with each vehicle
+generating its trajectory after the previous vehicles.
+
+\subsubsection{Trajectory Generation}
+To meet real-time requirements, a fast, feasible trajectory generation
+algorithm was needed. A Kinodynamic RRT variant was used for its speed, despite
+the lack of guaranteed optionality.
+
+\subsubsection{Trajectory Optimization}
+The Kinodynamic RRT provided a random feasible trajectory, which was then
+optimized. Initially, the optimization removed unnecessary steps to improve
+speed. Later, a new cost function rewarded vehicles that kept to the right side
+of corridors, simulating a road for organization and reduced collision risk.
+
+\textbf{Relevance Rating: 9/10}
+
+\section{Nonlinear Model Predictive Control for Trajectory Tracking and Obstacle Avoidance of Industrial Mobile Robots}\label{sec:Francisco_Madeira_Thesis_NMPC_for_reference_tracking_in_industrial_mobile_robots}
+This Master's Thesis by Francisco Maria de Lima Raposo Madeira, with Prof.
+Alberto Vale and Prof. Rodrigo Ventura, was submitted at Instituto Superior
+Técnico in December 2023.
+
+\subsection{Objective}
+The main objective was to develop an NMPC for accurately tracking a feasible
+trajectory while avoiding static and dynamic obstacles. Trajectory generation
+was not a primary focus, but likely relied on similar methods from prior
+research.
+
+\subsection{Proposed approach}
+The robot used as constraints in multiple physical parameters, such as the min and max speed, actuation and angular velocity, with this in mind the trajectory we have to follow can be represented as $trajectory =  \left[\text{state}_{1} \hspace{0.5cm} \text{state}_{2}  \hspace{0.5cm} \dots \hspace{0.5cm} \text{state}_{N} \right]$ where each of the indexed represent the state that the robot should have at time = $t_{i}$, since the number of points in the trajectory won't match the controller frequency we will need to interpolate between each of the point, the error of the interpolation is shown as being irrelevant for the control of the robot. The cost function of the controller can be represented as the one in\ref{eq:Francisco_madeira_thesis_cost_function} this cost function penalized offsets to the reference trajectory as well as reference to the actuation reference, since the reference is out new \"zero\", otherwise we would not be able to follow the trajectory correctly since we would try not act, this way we have a term that work as a feed forward of sorts in the NMPC.
+
+\begin{align}
+	l(h + k, \textbf{x}_{u}(k, \textbf{x}_{0}), \textbf{u}(k)) & = A + \lambda B \left[
+	\left( X_{curr} - X_{ref} \right)^2 + \left( Y_{curr} - Y_{ref} \right)^2  \right] \nonumber                                                                                          \\
+	                                                           & \quad + \lambda \left[ \left( {U_{x}}_{curr} - {U_{x}}_{ref} \right)^2 + \left( {U_{y}}_{curr} - {U_{y}}_{ref} \right)^2
+		\right]
+	\label{eq:Francisco_madeira_thesis_cost_function}
+\end{align}
+
+\subsection{Trajectory Generation}
+The obstacle Avoidance techniques explored in this thesis were a scanner (Lidar) in the vehicle and using the maximum distance an obstacle can be as $d_{max} =  N h v_{max}$ where N is the prediction horizon length and h is the time step used, this for our work is not as useful since we don't have a lidar in the robot and since our robot as 6DoF and not 3 DoF as the one in this thesis (x, y, and $\theta$ (yaw))
+
+The other method used was an occupancy map where the environment is discretized in a grid and each cell is marked with a number that indicates the likelihood of an obstacle being there.
+
+\subsubsection{Controller}
+The controller used in this thesis, the NMPC, was created using the casadi framework, with the IPOPT solver and run at 5Hz.
+
+\subsection{Usefull material}
+Overall looking at this thesis and mine own, we lack cooperative capabilities, since the only objective of this thesis was to follow a trajectory and avoiding obstacles, our system is also more complex as a robot, some adjustment would need to be done, also in this thesis the controller that follows the trajectory is non-linear, and it was previously discussed having the controller that follows the trajectory as being a high frequency linear controller, something like an SQ-MPC. The work seems interesting, but i don't really know what can be used for my work.
+
+\section{Predictive Controllers for Load Transportation in Microgravity Environments}
+This master thesis\cite{phodapol2023predictive} was written by SUJET PHODAPOL, and was submitted to KTH Royal Institute of Technology in 2023.
+
+\subsection{Objective}
+The main objective of this thesis was to developt a Predicitve controller for load Transportation in Microgravity environments, such as a body in orbit, this is actualy the main objective, since the proposed control algorithm have the objective of clearing debris from orbit, to reduce the risk of colosion with other man made, since each of this colision generates more debris, therefor increasing the risk. This a phenomenon called the Kessler syndrome that can make space travel impossible.
+
+\subsection{Proposed approach}
+
+\subsubsection{Vehicle Definition}
+The first step in the development of the final control algorithm is the definition of the robot that will be used for testing and its dynamics, since the robot is for use in orbit then the robot will need to use thruster based propulsion system, this comes as a consequence of the lack of friciton, meaning the only way for a robot to move is to expell a small mass at a large speed, meaning for each mission and for each robot the amount of energy (fuel) available is limited. The author then explains the mechanical systems of the robots, and the mathematical equation for the effect of each thruster in the robot force and thrust vector.
+
+After this a model for a n vehicle towing a load is created, explaining what each thruster in each vehicle will cause the full system (n vehicles and load) to do.
+
+\subsubsection{Controller Design}
+Using the equation presented in the previous chapter a simple NMPC can be created, the only problem with this is the high computational load required for solving the optimization problem. To solve this problem a linearized version of the system is presented, this linearization work by introducing lagrange multipliers, this optimization technique is applied to the computation of the cable tensions, this means we must not introduce a constraint to make sure the cable is always tensioned, since otherwise the movement of the load will not be impacted by the movement of the robot, this can be done by simply saying the force applied by a robot must be greater or equal to zero. Another way to decrease the computation power required is to convert the system from a centralized MPC to decentralized one, this is one where multiple robots compute the best action for them self according to some consensus algorithm, until a decision is done, when a consensus is reached the robots apply the action to the system. This generated uncertainty, specially since we cannot know the position of the other robots, neither the force being applied by them, so we must use an estimation for this 'outside force' in all the optimization problems.
+
+
+\subsection{Results}
+The result shown in this work seem promising, showing fast computational time for both the centralized and the decentralized control with faster time, as expected in the decentralized controller, the results also show that the centralized controller seems to be faster reaching the desired trajectory for the system, this means a certain trade off must be made in between acceptable time for the controller and the best result.
+
+\subsection{Relevance to work}
+This seems like a highly important work for my own thesis, since the topic are quite similar, multiple methods are used in both works. The main difference is that this work it to be used in the exterior environment of a space station, and my own will be for the inside. Good idea for both the controller and the simulation techniques used can be taken. Even tho for my own work we have currently decided to consider the joint between payload and robot as a rigid body, this work show that a cable can be used with not much complication.
+
+\begin{adjustwidth}{-1cm}{-1cm}
+\section{\small Notion of Control-Law Module and Modular Framework of Cooperative Transportation Using Multiple Nonholonomic Robotic Agents With Physical Rigid-Formation-Motion Constraints}
+\end{adjustwidth}
+
+This paper\cite{7140744} was authored by Wei Li, and was published in the 2016 edition of  IEEE Transactions on Cybernetics.
+
+\subsection{Objective}
+The main objective of this paper was to develop a control law for moving a planar rigid load, with the use of multiple two wheeled Nonholonomic robots that can be attached to the load. We need to take special care to the fact that the load is a rigid body, and the connection between the robots to the load is also rigid, since this way we need to make sure that out formation of robots is able to do RFM (Rigid Formation Motion), since otherwise we could either damage the load or the robots. Due to the robots being non holonomic we have a system that has two levels of mechanical constraints, one at the robot level, and the other at the formation level.
+
+\textcolor{red}{Observation:}
+A trajectory is considered to be RFM if and only is it follows equation \ref{eq: RFM equation}. This means that the norm of the position between any two agents is constant, meaning the movement of an agent in directly related to the movement of the other agents.
+
+This does not mean that agents must move in a straight line trajectory, curves can and need to be made.
+
+\begin{equation}
+	||d_{ij} (0)|| = || d_{ij} (t)||, \forall_{t} \geq 0, \forall_{i,j} \in {1, 2, \dots, n}, i \neq j
+	\label{eq: RFM equation}
+\end{equation}
+
+\subsection{Proposed Approach}
+The authors propose an RFM control framework by decomposing feasible RFM paths into partitions, each governed by a control-law module (CLM) that maintains specific motion constraints. Two primary CLMs, for rigid-translation and rigid-rotation, are provided, where each partitioned motion segment can use an interchangeable CLM instance. This modular approach allows for each partition to be managed independently, aligning with various kinematic requirements and making the control system adaptive and scalable. The RFM framework also offers a rigid-closure method for accurate body manipulation, supporting non-attached agents by creating an initial rigid configuration that holds throughout the transport.
+
+\subsection{Results}
+The framework enables precise and flexible RFM control, allowing each agent to maintain formation and accomplish the transportation task efficiently. The proposed CLMs exhibit the ability to maintain rigid formation through both translation and rotation, adapting to different motion modes as necessary. Simulated scenarios demonstrated the effectiveness of the control framework in achieving cooperative manipulation without direct force calculations, simplifying implementation while ensuring modularity and adaptability to varying tasks and environments.
+
+
+\section{\small Cooperation and Coordination Transportation for
+Nonholonomic Mobile Manipulators: A Distributed
+Model Predictive Control Approach}
+
+The paper\cite{qin2022cooperation} was authored by Dongdong Qin, Jinhui Wu, Andong Liu , Wen-An Zhang , Member, IEEE, and Li Yu , Member, IEEE and was published in IEEE Transactions on Systems, Man, and Cybernetics: Systems in 2022.
+
+\subsection{Objective}
+This paper investigates the coordination and cooperation problem for a team of nonholonomic mobile manipulators (NMMs) collaboratively transporting an object in a workspace with obstacles. The aim is to develop a control strategy that enables each manipulator to follow the desired trajectory while managing significant constraints such as feasible states, input constraints, parameter synchronization, and obstacle avoidance. To address these challenges, a distributed model predictive control (MPC) framework is introduced, optimizing each manipulator's behavior in a synchronized and efficient manner.
+
+\subsection{Proposed Approach}
+The authors propose a decoupling control framework where the NMMs are modeled in task-space for end-effectors and in null-space for the mobile bases. Using a modified virtual structure method, the task of cooperative transportation is reduced to two independent tracking problems: task-space end-effectors’ synchronization and null-space mobile bases’ navigation around obstacles. A distributed MPC approach, augmented with a general projection neural network (GPNN), is utilized to solve the constrained optimization problem for optimal control input, balancing state and input constraints. The synchronization constraint, introduced as a cost term in the MPC, enables each NMM to maintain position and velocity alignment within the team.
+
+\subsection{Results}
+The simulation results validate the proposed approach’s effectiveness in maintaining coordinated transportation even in the presence of obstacles and disturbances. Compared with classical consensus control strategies, the GPNN-based MPC approach shows superior stability, reduced control input requirement, and robust handling of disturbances. The strategy enables both synchronization of end-effectors and obstacle avoidance for mobile bases, facilitating efficient, stable, and cooperative manipulation tasks in constrained environments. The results underscore the potential of this distributed MPC approach to enhance the adaptability and reliability of multi-robot systems.
+
+\section{Cooperative Load Control and Transportation}
+
+This paper\cite{dhiman2018cooperative} was authored by Kuldeep K Dhiman,Abhishek,and Mangal Kothari in 2018 for AIAA Information Systems-AIAA Infotech 
+
+\subsection{Objective}
+This paper focuses on controlling and stabilizing a suspended payload during transportation by autonomous aerial vehicles, specifically quadrotors. The research emphasizes minimizing load swing, which can adversely affect flight performance and stability. The challenge intensifies when multiple quadrotors are involved, requiring careful load distribution, swing control, and cooperative trajectory planning. The primary objective is to design a robust control law that can manage a payload with reduced oscillation, allowing for efficient waypoint transition and trajectory tracking with a single or multiple quadrotors.
+
+\subsection{Proposed Approach}
+The authors develop a cooperative control strategy utilizing a dual PID controller setup. The first PID controller manages the quadrotor's motion, while the second controls load swing, damping oscillations in real-time. A Newton-Euler method is used to derive the system’s dynamics, which guides the control design in achieving stable, minimal-swing load transitions. For cooperative transportation with two quadrotors, load distribution is balanced through synchronized trajectory generation, ensuring smooth coordination between the UAVs. This approach was validated using a motion capture system to track both the quadrotors and the suspended payload in a controlled 3D environment.
+
+\subsection{Results}
+Experimental results demonstrate the effectiveness of the control framework in damping load oscillations and achieving stable trajectory tracking for the suspended payload. Single and dual-quadrotor tests showed that the controller could quickly stabilize the load after disturbances and maintain desired trajectories with minimal oscillation. The setup successfully enabled smooth waypoint transitions and circular trajectory following, even under manual perturbations, validating the control law’s practical application for cooperative payload transportation.
+
+\section{Fully Decentralized Controller for Multi-Robot Collective Transport in Space Applications}
+This paper\cite{farivarnejad2021fully} was authored by Farivarnejad, Hamed and Lafmejani, Amir Salimi and Berman in 2021 for IEEE Aerospace Conference. 
+
+\subsection{Objective}
+This paper introduces a decentralized control strategy for multi-robot systems transporting a payload in a microgravity environment. The research targets space applications, such as on-orbit assembly and planetary construction, where inter-robot communication may be unreliable or unavailable. The proposed control approach aims to enable each robot to transport a shared payload without relying on information about payload dynamics, robot distribution, or inter-robot communication, thus ensuring adaptability in uncertain and dynamic environments.
+
+\subsection{Proposed Approach}
+The control strategy is inspired by collective ant behavior, where robots independently guide a payload to a target using local position and velocity measurements alone. A proportional-derivative (PD) controller is designed for each robot to stabilize the payload’s center of mass towards the desired position. The control law allows each robot to adjust its force based on local sensing data, ensuring that robots act independently. By leveraging Lyapunov stability theory, the researchers prove that the system converges to a neighborhood of the target, with error margins influenced by robot distribution and payload characteristics.
+
+\subsection{Results}
+Simulation results in MATLAB validate the controller’s robustness in various scenarios, including asymmetric and irregular payload configurations. The payload’s center of mass converges to a small neighborhood of the target position, with error magnitude reduced by increasing robot count or optimizing their spatial arrangement around the payload. These findings highlight the potential of the proposed decentralized control strategy for efficient and scalable payload transport in microgravity, supporting future multi-robot space operations.
+
+\section{Multi-Objective Control for Cooperative Payload Transport with Rotorcraft UAVs}
+
+This paper\cite{gimenez2018multi} was authored by Gimenez, Javier and Gandolfo, Daniel C and Salinas, Lucio R and Rosales, Claudio and Carelli, Ricardo, in 2018 for ISA transactions
+
+\subsection{Objective}
+This paper presents a multi-objective control approach for cooperative payload transport using rotorcraft UAVs. The primary goals are to achieve a stable payload trajectory while mitigating oscillations caused by wind disturbances, avoiding obstacles, and ensuring safe inter-UAV distances. The study uses a kinematic formation controller based on null-space theory to handle these simultaneous tasks. The primary objective is to allow a cable-suspended payload to follow a predefined path accurately, even in challenging conditions, by coordinating two UAVs.
+
+\subsection{Proposed Approach}
+The authors propose a kinematic controller that leverages null-space theory to assign and manage task priorities, such as payload trajectory tracking, obstacle avoidance, and inter-vehicle distance regulation. The controller decomposes these tasks into independent objectives, each managed by a control action generated through Lyapunov-based stability. The UAV dynamics and payload are modeled with six degrees of freedom (6-DoF) and flexible cables to simulate realistic interaction forces. Obstacle avoidance is achieved through potential field methods, and wind disturbance is accounted for by incorporating realistic aerodynamic models into the simulation.
+
+\subsection{Results}
+Simulation results validate the controller's capability to manage multiple objectives, demonstrating the system’s stability and adaptability to both static and dynamic obstacles, as well as wind perturbations. The approach successfully limits payload oscillations, maintains safe inter-UAV spacing, and enables effective path following under various conditions. The multi-objective controller offers a promising solution for complex cooperative transport tasks, providing reliable performance across multiple control priorities and adverse environmental factors.
+
+\section{Interleaved Predictive Control and Planning for an Unmanned Aerial Manipulator with On-the-Fly Rapid Re-Planning in Unknown Environments}
+
+The article\cite{yavari2022interleaved} was written by Mohammadreza Yavari , Kamal Gupta , Member, IEEE, and Mehran Mehrandezh, Member, IEEE, and published in 2022 in IEEE Transactions on Automation Science and Engineering
+
+\subsection{Objective}
+This paper presents a control and planning strategy for an unmanned aerial manipulator (UAM) to execute object retrieval tasks in unknown, confined environments. Challenges arise from the coupled dynamics between the UAV and its manipulator arm, as well as limited flight time. The main goal is to create a rapid re-planning framework allowing the UAM to adjust its trajectory in real time, addressing unexpected obstacles and navigating towards the target without prior environmental knowledge.
+
+\subsection{Proposed Approach}
+The authors propose an interleaved system integrating a neural network-aided kinodynamic RRT* planner (Lazy-Steering-RRT*) and a model predictive controller (MPC) coupled with PID controllers. The Lazy-Steering-RRT* is optimized for quick trajectory planning, estimating edge costs via neural networks instead of solving boundary value problems in real-time, enhancing planning speed. This framework allows iterative re-planning as the environment is sensed incrementally, with a focus on minimizing energy usage. The control design includes separate controllers for the UAV and manipulator, ensuring stability and trajectory accuracy.
+
+\subsection{Results}
+Simulations using a realistic physics engine validate the system's effectiveness in complex retrieval tasks, showing that the UAM can navigate through narrow and cluttered spaces. The re-planning approach allows the UAM to adapt to new obstacles detected mid-flight, maintaining control stability even with significant motion from the manipulator arm. The strategy demonstrates fast response times and energy-efficient navigation, essential for extended operational scenarios in unknown environments.
+
+
+\section{Analysis, Planning, and Control for Cooperative Transportation of Tethered Multi-Rotor UAVs}
+
+This article\cite{liu2021analysis} was written by Ya Liu, Fan Zhang, Panfeng Huang, Xiaozhen Zhang and was published in 2021 in the journal Aerospace Science and Technology 
+
+\subsection{Objective}
+This paper investigates the cooperative transportation of payloads by multiple tethered multi-rotor UAVs, focusing on dynamic wrench analysis, trajectory optimization, and decentralized control. Unlike traditional cable-driven systems with fixed anchors, this study addresses the complexity introduced by the UAVs' bounded thrust, motion acceleration, and external disturbances. A primary goal is to enhance payload handling by analyzing the available wrench set and introducing a new index, the capacity margin, to measure the payload's maximum allowable acceleration for various configurations.
+
+\subsection{Proposed Approach}
+The proposed approach includes a comprehensive analysis of the available wrench set and a tension distribution algorithm for generating feasible UAV trajectories. The system is designed with a fixed-time extended state observer (ESO)-based decentralized output feedback control, requiring only UAV velocity data. The wrench analysis, combined with trajectory optimization, allows the system to respect UAV constraints and maintain taut tethers during transportation. This decentralized control scheme enables each UAV to independently adjust based on local sensing, eliminating the need for a central control station.
+
+\subsection{Results}
+Simulation and experimental results validate the robustness and adaptability of the proposed system under various payload weights and UAV formations. Indoor and outdoor experiments confirm the effectiveness of the fixed-time ESO-based controller in maintaining stable payload transport, even in the presence of disturbances. The results demonstrate successful trajectory tracking and minimal payload oscillations, with improvements over traditional PID controllers. The decentralized approach offers an efficient and reliable solution for cooperative UAV transport tasks in complex environments.
+
+
+
+\section{Cooperative Transportation of a Payload Using Quadrotors: A Reconfigurable Cable-Driven Parallel Robot}
+
+This paper\cite{masone2016cooperative} was written by Carlo Masone, Heinrich H. Bülthoff and Paolo Stegagno and was publish in the 2016 edition of IROs
+
+\subsection{Objective}
+This paper addresses the challenge of cooperative aerial transportation of a payload using a team of quadrotors connected by cables, treating the quadrotors as a reconfigurable cable-driven parallel robot (RCDPR). The goal is to control the payload's trajectory and stabilize it without predefining the cable forces, instead using a model inspired by RCDPR frameworks. This approach allows the quadrotors to independently manage their contributions to payload stability and movement, facilitating real-time teleoperation and control in complex environments.
+
+\subsection{Proposed Approach}
+The authors employ a model based on the full dynamics of the payload-quadrotor system, linking the motion of the quadrotors directly to the payload’s movement. This model identifies “internal motions,” which are quadrotor movements that do not affect the payload's position, allowing for better control of cable tensions. A tension distribution algorithm is incorporated to optimize force distribution among the cables. The system is designed to enable teleoperation, with the operator controlling the payload while the internal dynamics of the system automatically handle tension adjustments among the quadrotors.
+
+\subsection{Results}
+Simulation results validate the approach, demonstrating the system’s capacity for precise payload control and stable flight dynamics. The model enables smooth trajectory tracking and efficient load sharing among the quadrotors, with minimal oscillations during payload manipulation. The tension distribution algorithm prevents slack in cables, and the teleoperation framework provides intuitive control for human operators, making the setup highly adaptable for real-world applications where flexible and dynamic payload manipulation is required.
+
+\section{Nonlinear Model Predictive Control for Cooperative Transportation and Manipulation of Cable-Suspended Payloads with Multiple Quadrotors}
+
+This paper\cite{li2023nonlinear} was written by Guanrui Li and Giuseppe Loianno, and was published to the 2023 edition of IROS
+
+\subsection{Objective}
+This paper presents a Nonlinear Model Predictive Control (NMPC) approach for the cooperative manipulation and transportation of a rigid-body payload by multiple quadrotors using cable suspension. The study addresses the challenges associated with indirect actuation, coupled dynamics, and the nonlinear configuration space inherent in such systems. The primary goal is to enable precise 6-DoF control of the payload while allowing for additional tasks like obstacle avoidance and inter-robot separation, which are made possible by exploiting the system’s mechanical redundancies.
+
+\subsection{Proposed Approach}
+The authors propose an NMPC framework that leverages a lightweight state vector including only the payload states, thereby reducing computational complexity. The controller operates on the SE(3) manifold, optimizing both the payload trajectory and secondary objectives like spatial separation among quadrotors and obstacle avoidance. By introducing a null-space-based redundancy exploitation, the control strategy enables each quadrotor to maintain proper tension without a centralized controller. The optimization is solved using Sequential Quadratic Programming (SQP) with real-time iteration, addressing both payload dynamics and actuator constraints effectively.
+
+\subsection{Results}
+Simulation and experimental results validate the NMPC’s effectiveness in managing trajectory tracking, obstacle avoidance, and inter-robot separation in both controlled and real-world settings. The method demonstrated small tracking errors (within 0.1 m) for complex trajectories, and successfully maintained stable payload manipulation even under disturbances. The NMPC framework provides an efficient solution for multi-robot payload transport, with significant advantages in handling nonlinear dynamics and achieving precise control over the payload’s position and orientation.
+
+\section{Null-Space-Based Path-Following Control for Cooperative Payload Transport Using Multiple Rotorcraft UAVs}
+	This paper was written by and published in the 2018 edition of ICUAS
+
+\subsection{Objective}
+This paper focuses on cooperative payload transport using multiple rotorcraft UAVs connected to a payload via flexible cables. The primary goal is to enable a stable path-following control system that can manage simultaneous objectives: obstacle avoidance, even distribution of payload weight, formation shape control, and minimization of payload oscillations. The control framework is designed to prioritize obstacle avoidance while fulfilling secondary objectives such as load distribution and inter-vehicle separation.
+
+\subsection{Proposed Approach}
+The authors propose a null-space-based control strategy where multiple task objectives are ranked by priority, allowing lower-priority tasks to operate within the null-space of higher-priority ones, thereby avoiding conflicts. A kinematic controller is applied, with outputs fed into a dynamic adaptation model to produce the necessary control actions. The control system uses an accurate 6-DoF dynamic model for both the UAVs and the flexible cables connecting them to the payload. The primary objective of obstacle avoidance is achieved using 3D LiDAR sensors on each UAV, while formation and path-following tasks are handled through continuous adjustments based on payload weight distribution and UAV positioning.
+
+\subsection{Results}
+Simulation results validate the proposed controller’s effectiveness in handling obstacle avoidance and maintaining a stable formation despite external disturbances like wind. The controller effectively manages payload path-following with minimal oscillations, and the task prioritization scheme enables a balanced distribution of the payload weight among the UAVs. The null-space-based approach proves successful in meeting multiple control objectives without conflicts, making it suitable for complex multi-UAV cooperative transport missions.
+
+\printbibliography\end{document}

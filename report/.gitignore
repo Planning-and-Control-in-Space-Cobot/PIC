@@ -1,0 +1,54 @@
+# LaTeX intermediate files
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.bbl
+*.bcf
+*.blg
+*.idx
+*.ilg
+*.ind
+*.dvi
+*.fdb_latexmk
+*.synctex(busy)
+*.synctex.gz
+*.run.xml
+
+# LaTeX build files
+*.pdf
+*.ps
+*.eps
+
+# Editors and IDEs
+*.swp
+*~ 
+*.bak
+*.backup
+*.tmp
+*.temp
+*.synctex
+.vscode/
+.idea/
+
+# Compiled files
+*.cls
+*.sty
+*.bst
+
+# Folders
+_build/
+_build_latexmk/
+build/
+output/
+tmp/
+latex.out/
+PDFs/  # If you're using a folder to store PDFs
+

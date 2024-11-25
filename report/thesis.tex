@@ -1,0 +1,71 @@
+
+\documentclass[english, oneside]{ist-thesis}
+
+\usepackage{csquotes}
+
+\usepackage{biblatex}
+\addbibresource{main.bib}
+
+
+\usepackage{booktabs}
+
+\usepackage{xcolor}
+\usepackage{hyperref}
+ 
+\usepackage[abbreviations,symbols]{glossaries-extra}
+\setabbreviationstyle{long-short}
+\loadglsentries{glossary}
+
+% Packages para esboçar gráficos e diagramas
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{positioning,arrows.meta}
+
+\graphicspath{{graphics/}}
+\pgfplotsset{table/search path = {data}}
+
+\setcoverimage[0.5]{example-image-a}
+
+\begin{document}
+
+\makecover
+
+\tableofcontents
+\clearpage
+
+\mainstart
+
+
+\section{Introduction}
+
+\subsection{Motivation}
+\input{Sections/Introduction/Motivation/Motivation.tex}
+
+\subsection{Problem Definition}
+\input{Sections/Introduction/Problem Definition/ProblemDefiniton.tex}
+
+\section{State of the art}
+\input{Sections/State Of The Art/state_of_art.tex}
+
+\section{Approach}
+
+\section{Expected Results}
+
+\section{Conclusions}
+
+
+
+
+
+
+
+\nocite{latex-companion, fontcatalogue, latexwiki, ctan, texsx}
+
+
+% Introduz a bibliografia. A opção 'heading = bibintoc' introduz a
+% bibliografia no índice.
+\printbibliography[heading = bibintoc]
+
+\appendix
+
+\end{document}
