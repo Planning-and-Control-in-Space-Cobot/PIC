@@ -1,41 +1,94 @@
+\documentclass[a4paper, oneside]{article}
 
-\documentclass[english, oneside]{ist-thesis}
-
+% Packages
 \usepackage{csquotes}
-
 \usepackage{biblatex}
 \addbibresource{main.bib}
 
-
 \usepackage{booktabs}
-
 \usepackage{xcolor}
 \usepackage{hyperref}
- 
 \usepackage[abbreviations,symbols]{glossaries-extra}
 \setabbreviationstyle{long-short}
 \loadglsentries{glossary}
 
-% Packages para esboçar gráficos e diagramas
 \usepackage{tikz}
+\usepackage{amsfonts} 
+\usepackage{capt-of}
+\usepackage{amsmath} % or
+\usepackage{mathtools}
 \usepackage{pgfplots}
+\usepackage{subcaption}
+\usepackage{float}
 \usetikzlibrary{positioning,arrows.meta}
 
 \graphicspath{{graphics/}}
 \pgfplotsset{table/search path = {data}}
 
-\setcoverimage[0.5]{example-image-a}
+% IST Colors
+\definecolor{ist-cyan}{cmyk}{1,0,0,0}
+\definecolor{ist-gray}{cmyk}{0.2,0,0,0.8}
 
+% Metadata
+\newcommand{\ttitle}{Cooperative Payload Transportation using Multiple Space Cobots in Microgravity Environment}
+\newcommand{\tsubtitle}{}
+\newcommand{\tauthor}{André Rebelo Teixeira}
+\newcommand{\tdegree}{Master in Electrical and Computer Engineering}
+\newcommand{\tsupervisor}{Prof. Rodrigo Martins de Matos Ventura}
+\newcommand{\tdate}{November 2024}
+\newcommand{\tinstitution}{Instituto Superior Técnico}
+
+% Cover Page Command
+\newcommand{\makecover}{
+    \pagenumbering{gobble} % Suppress page numbering
+    \begin{titlepage}
+        \centering
+        \includegraphics[scale=0.29]{IST_A_CMYK_POS} % Adjust to your IST logo
+        \vspace{2cm}
+        
+        % Title
+        {\LARGE\bfseries \ttitle \par}
+        \vspace{0.5cm}
+        {\Large \tsubtitle \par}
+        \vspace{1.5cm}
+        
+        % Author
+        {\Large \textbf{\tauthor} \par}
+        \vspace{1cm}
+        
+        % Degree
+        {\large Thesis to obtain the Master of Science Degree in \par}
+        {\Large\textbf{\tdegree} \par}
+        \vspace{1cm}
+        
+        % Supervisor
+        {\large
+        \begin{tabular}{rl}
+            Supervisor: & \tsupervisor
+        \end{tabular} \par}
+        \vspace{2cm}
+        
+        % Institution and Date
+        {\large \tinstitution \par}
+        \vspace{0.5cm}
+        {\large \tdate \par}
+    \end{titlepage}
+    \clearpage
+    \pagenumbering{arabic} % Reset page numbering
+}
+
+% Document
 \begin{document}
 
+% Cover Page
 \makecover
 
+% Table of Contents
 \tableofcontents
 \clearpage
 
-\mainstart
-
- 
+% Main Content
+\clearpage
 \section{Introduction}
 
 \subsection{Motivation}
@@ -44,27 +97,77 @@
 \subsection{Problem Definition}
 \input{Sections/Introduction/Problem Definition/ProblemDefiniton.tex}
 
-\section{State of the art}
+\subsection{Challenges}
+\textcolor{blue}{Explain the main challenges we must tackle during the work, and how to break the problem into smaller isolated problems.}
+
+\subsection{Objectives and Requirements}
+\input{Sections/Introduction/Objectives and Requirments/Objectives and Requirments.tex}
+
+\subsection{Contributions}
+\input{Sections/Introduction/Contributions/Contributions.tex}
+
+\clearpage
+\section{Background}
+
 \subsection{Trajectory Generation}
-\input{Sections/State Of The Art/Trajectory_Generation/TrajectoryGeneration.tex}
+\input{Sections/BackGround/Trajectory Generation/Trajectory Generation.tex}
 
-\subsection{Control Law}
-\input{Sections/State Of The Art/Control_Law/Controller.Tex}
+\subsection{Motion Control}
+\input{Sections/BackGround/Motion Control/Motion Control.tex}
 
-\section{Approach}
+\subsection{Numerical Solver}
+\subsubsection{CasADi}
+\input{Sections/BackGround/Numerical Solver/Casadi.tex}
 
-\section{Expected Results}
+\subsubsection{Initial Guess}
+\input{Sections/BackGround/Numerical Solver/Initial guess.tex}
 
-\section{Conclusions}
+\subsection{Space Robotics}
+\input{Sections/BackGround/Space Robots.tex}
 
 
-\nocite{latex-companion, fontcatalogue, latexwiki, ctan, texsx}
 
 
-% Introduz a bibliografia. A opção 'heading = bibintoc' introduz a
-% bibliografia no índice.
-\printbibliography[heading = bibintoc]
+\clearpage
+\section{State of the Art}
+\textcolor{blue}{In this section, present the current state of the art for trajectory generation, optimization, cooperative payload transportation, and path-following control.}
 
+\clearpage
+\section{Proposed Approach}
+
+\subsection{Dynamical Model}
+\input{Sections/Proposed Approach/Motion Model.tex}
+
+\subsubsection{SpaceCobot}\label{sec:Proposed Approach: Dynamical Model: Space Cobot}
+
+\input{Sections/Proposed Approach/Space Cobot.tex}
+
+\subsection{Trajectory Generation}
+
+\subsection{Motion Control}
+    \subsection{Simulation Environment}
+\textcolor{blue}{Discuss the simulation environment used, including its advantages and limitations, such as the lack of orbital dynamics and microgravity.}
+
+\input{Sections/Proposed Approach/Simulator.tex}
+
+\subsection{Real-World Environment}
+\input{Sections/Proposed Approach/Real World.tex}
+
+\clearpage
+\section{Preliminary Results}
+
+\subsection{Simulation Results}
+\textcolor{blue}{Show results obtained during the project, including trajectory generation and path-following results using one and multiple robots.}
+
+\clearpage
+\section{Work Plan}
+\textcolor{blue}{Explain what remains to be done for a fully functional robot, the priority of each missing step, and how to achieve them.}
+
+% Bibliography
+\nocite{*} % Include all references
+\printbibliography[heading=bibintoc]
+
+% Appendices
 \appendix
 
 \end{document}

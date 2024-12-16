@@ -1,0 +1,44 @@
+In order to be able to compreenhend the dynamics of the full system, with multiple robots and payload, we must first be able to understant the dynamics of a single freeflyer in a microgravity environment. We can derive the nonlinear dinamic equations of the system in with the Newton, referencing translation, and Euler, referencing rotation, equations. This can be seen in both \cite{RoqueVentura2016spacecobot}, the main difference to this work is the use of quaternion for the representation of attitude, instead of the rotation matrix. Making the new equations be \ref{eq:Proposed approach: Motion Model: Nonlinear dynamics}, where p, is the position of the robot, v is the velocity, q is the quaternion that represents the attitude of the robot, and $\omega$ is the angular velocity of the robot, this for variables constitute the state vector of the system, x= [p, v, q, $\omega]. The system parameters here are J \in \mathbb{R}^{3x3}$ is the inertia matrix of the robot, and m the mass of the robot.
+
+\begin{equation}
+    \begin{cases}
+        &\dot{p} = v \\
+        &m\dot{v} = R(q)F \\
+        &2\dot{q} = Q(q) \omega \\ 
+        &\dot{\omega} = J^{-1} \left(M -\omega \times J\omega \right) 
+    \end{cases}
+    \label{eq:Proposed approach: Motion Model: Nonlinear dynamics}
+\end{equation}
+
+The matrix R(q) $\in \mathcal{SO}(3)$ is the right-hand rotation matrix as defined in \ref{eq:Proposed approach: Motion Model: Right hand rotation matrix}
+\begin{equation}
+    R\left(q\right) = 
+    \begin{bmatrix}
+    1 - 2q_{y}^{2} - 2q_{z}^{2} && 2q_{x}q_{y} - 2q_{z}q_{w} && 2q_{x}q_{z}+2q_{y}q_{w} \\
+        2q_{x}q_{y} + 2q_{z}q_{w} && 1-2q_{x}^{2}-2q_{z}^{2} && 2q_{y}q_{z}-2q_{x}q_{y} \\
+        2q_{x}q_{z} - 2q_{y}q_{w} && 2q_{y}q_{z}+2q_{x}q_{w} && 1-2q_{x}^{2}-2q_{y}^{2}
+    \end{bmatrix}
+    \label{eq:Proposed approach: Motion Model: Right hand rotation matrix}
+\end{equation}
+
+And the Q(q) $\in \mathbb{R}^{4x3}$ is the quaternion matrix as defined in \ref{eq:Proposed approach: Motion Model: Q matrix}
+
+\begin{equation}
+    Q\left(q\right) = 
+    \begin{bmatrix}
+        q_w && -q_z && q_y \\
+        q_z && q_w && -q_x \\
+        -q_y && q_x && q_w \\
+        -q_x && -q_y && -q_z
+    \end{bmatrix}
+    \label{eq:Proposed approach: Motion Model: Q matrix}
+\end{equation}
+
+The vector M $\in \mathbb{R}^{3}$ is the torque applied in the robot, and F $\in \mathbb{R}^3$ is the force being applied. We can related these to the system actuators according to \ref{eq:Proposed approach: Motion Model: Actuators}, where A is a matrix that converts from actuators space to torque and force space, and u in the actuation input vector of the system, meaning $u = \begin{bmatrix} u_{1} && \dots && u_{n} \end{bmatrix}^{T}$, where n is the number of actuators in the system and $u_{i}$ is the input of the i-th actuator. 
+\begin{equation}
+    \begin{pmatrix}
+        F \\
+        M
+    \end{pmatrix} = A u
+    \label{eq:Proposed approach: Motion Model: Actuators}
+\end{equation}
