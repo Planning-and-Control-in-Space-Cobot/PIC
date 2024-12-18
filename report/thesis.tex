@@ -20,6 +20,9 @@
 \usepackage{pgfplots}
 \usepackage{subcaption}
 \usepackage{float}
+\usepackage{graphicx} % For \resizebox
+\usepackage{threeparttable} % For footnotes below table
+
 \usetikzlibrary{positioning,arrows.meta}
 
 \graphicspath{{graphics/}}
@@ -97,9 +100,6 @@
 \subsection{Problem Definition}
 \input{Sections/Introduction/Problem Definition/ProblemDefiniton.tex}
 
-\subsection{Challenges}
-\textcolor{blue}{Explain the main challenges we must tackle during the work, and how to break the problem into smaller isolated problems.}
-
 \subsection{Objectives and Requirements}
 \input{Sections/Introduction/Objectives and Requirments/Objectives and Requirments.tex}
 
@@ -111,6 +111,9 @@
 
 \subsection{Trajectory Generation}
 \input{Sections/BackGround/Trajectory Generation/Trajectory Generation.tex}
+
+\subsection{Trajectory Optimization}
+\input{Sections/BackGround/Trajectory Optimization/Trajectory Optimization.tex}
 
 \subsection{Motion Control}
 \input{Sections/BackGround/Motion Control/Motion Control.tex}
@@ -130,7 +133,7 @@
 
 \clearpage
 \section{State of the Art}
-\textcolor{blue}{In this section, present the current state of the art for trajectory generation, optimization, cooperative payload transportation, and path-following control.}
+\input{Sections/State of the Art/Payload Transportation.tex}
 
 \clearpage
 \section{Proposed Approach}
@@ -138,7 +141,7 @@
 \subsection{Dynamical Model}
 \input{Sections/Proposed Approach/Motion Model.tex}
 
-\subsubsection{SpaceCobot}\label{sec:Proposed Approach: Dynamical Model: Space Cobot}
+\subsection{SpaceCobot}\label{sec:Proposed Approach: Space Cobot}
 
 \input{Sections/Proposed Approach/Space Cobot.tex}
 

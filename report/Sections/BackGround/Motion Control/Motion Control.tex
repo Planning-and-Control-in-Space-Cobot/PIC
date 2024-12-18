@@ -1,6 +1,6 @@
 In this section, we provide the necessary background from a control theory perspective to facilitate the understanding of the remainder of this work. Initially, we introduce general concepts related to optimization problems. Subsequently, we delve into the foundational principles of Nonlinear Programming (NLP), with a focus on Nonlinear Model Predictive Control (NMPC) and its application within control loops. Finally, we explore the concept of cooperative control and its relevance to multi-agent systems.
 
-\subsection{Optimization Problems}
+\subsubsection{Optimization Problems}
 
 An optimization problem is defined as the task of determining the best, or optimal, solution among all feasible solutions while adhering to a set of constraints. This process typically involves minimizing an objective function, often referred to as the cost function in specific applications. For cases where maximization is desired, the problem can be reformulated to minimize the negative of the cost function.
 
@@ -28,7 +28,7 @@ The general formulation of an optimization problem is presented in Equation \ref
     \end{equation}
 \end{minipage}
 
-\subsection{Nonlinear Model Predictive Control}
+\subsubsection{Nonlinear Model Predictive Control}
 
 Nonlinear Model Predictive Control (NMPC) is an optimization-based technique for the feedback control of nonlinear systems, incorporating system constraints \cite{grune2017nonlinearmpc}. NMPC relies on a model of the system to predict its future behavior over a predefined prediction horizon. The control input that minimizes the cost function within this horizon is calculated, and only the first control action is applied. This process is repeated iteratively.
 
@@ -46,6 +46,7 @@ The internal mechanism of Model Predictive Control (MPC) systems, whether linear
 \begin{itemize}
     \item \textbf{State Measurement:} Measure the current state of the system, \( x(s) \in \mathbb{X} \), where \( \mathbb{X} \) is the system's state space.
     \item \textbf{Optimization Problem Definition:} Formulate the optimal control problem (OCP) as shown in Equation \ref{eq:mpc_optimization_problem}, using the current system state \( x(s) \) as the initial condition \( x_0 \). In this equation, \( f \) represents the system dynamics model, and \( l \) is the cost function to be minimized:
+
     \begin{equation}
         \begin{aligned}
             &\underset{u(\cdot) \in  \mathbb{U}^{N}(x_{0})}{\text{minimize}} \quad J_{N}(x_{0}, u(\cdot)) = \sum_{k=0}^{N-1} l(x_u(k, x_0), u(k)) \\

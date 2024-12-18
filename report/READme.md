@@ -5,11 +5,13 @@ README for the PIC report updates. Whenever a new section is written this file w
 ### Done
 > Introduction
 > - [x] Motivation 
+> - [x] Contributions
 > - [x] Problem Definition 
 > - [x] Objectives and Requirments
 
 > Background
 > - [x] Motion Control
+> - [x] Trajectory Generation (finish)
 > - [x] Space Free flyers
 
 > Proposed Approach
@@ -20,17 +22,19 @@ README for the PIC report updates. Whenever a new section is written this file w
 
 ### To do:
 > Introduction 
-> - [ ] Contributions
 
 > Background
-> - [ ] Trajectory Generation (finish)
+> - [ ] Evaluate the decision to add map sharing as category
+> - [ ] Evaluate the decistion to add Distrubuted MPC to the backgroung 
+
+> State of the Art
+> - [ ] Cooperative Payload transportation
 
 > Proposed Approach
 > - [ ] Trajectory generation
 > - [ ] Motion Control
 
-> State of the Art
-> - [ ] Cooperative Payload transportation
+
 
 > Work Plan 
 > - [ ] Gantt Chart

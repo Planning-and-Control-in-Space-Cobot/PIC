@@ -1,3 +1,4 @@
+\subsubsection{Single Robot Dynamics}
 In order to be able to compreenhend the dynamics of the full system, with multiple robots and payload, we must first be able to understant the dynamics of a single freeflyer in a microgravity environment. We can derive the nonlinear dinamic equations of the system in with the Newton, referencing translation, and Euler, referencing rotation, equations. This can be seen in both \cite{RoqueVentura2016spacecobot}, the main difference to this work is the use of quaternion for the representation of attitude, instead of the rotation matrix. Making the new equations be \ref{eq:Proposed approach: Motion Model: Nonlinear dynamics}, where p, is the position of the robot, v is the velocity, q is the quaternion that represents the attitude of the robot, and $\omega$ is the angular velocity of the robot, this for variables constitute the state vector of the system, x= [p, v, q, $\omega]. The system parameters here are J \in \mathbb{R}^{3x3}$ is the inertia matrix of the robot, and m the mass of the robot.
 
 \begin{equation}
@@ -41,4 +42,17 @@ The vector M $\in \mathbb{R}^{3}$ is the torque applied in the robot, and F $\in
         M
     \end{pmatrix} = A u
     \label{eq:Proposed approach: Motion Model: Actuators}
+\end{equation}
+
+\subsubsection{Multiple Robot Dynamics}
+After connecting multiple robot to the payload, the dynamics of the system changes, since now each robot is couple with outside forces that we must take into consideration. We can see the new dynamic equations for the system in equation \ref{}
+
+\begin{equation}
+\begin{cases}
+\dot{p_i} &= v_{i} \\
+m_i \dot{v_i} &= R(q_i)F_i - T_i \\
+2\dot{q_i} &= Q(q) \omega_i \\
+\dot{\omega_i} &=J^{-1}(M - \omega \times J \omega - r_i \times R(q_i)T_i)
+\end{cases}
+\label{eq:Proposed Approach:Motion Model: Multiple Robot Dynamics: Robot Dynamics}
 \end{equation}
