@@ -6,8 +6,9 @@
 \addbibresource{main.bib}
 
 \usepackage{booktabs}
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{hyperref}
+\usepackage{tikz}          % For legend squares
 \usepackage[abbreviations,symbols]{glossaries-extra}
 \setabbreviationstyle{long-short}
 \loadglsentries{glossary}
@@ -93,68 +94,66 @@
 % Main Content
 \clearpage
 \section{Introduction}
+    \subsection{Motivation}
+    \input{Sections/Introduction/Motivation/Motivation.tex}
 
-\subsection{Motivation}
-\input{Sections/Introduction/Motivation/Motivation.tex}
+    \subsection{Problem Definition}
+    \input{Sections/Introduction/Problem Definition/ProblemDefiniton.tex}
 
-\subsection{Problem Definition}
-\input{Sections/Introduction/Problem Definition/ProblemDefiniton.tex}
+    \subsection{Objectives and Requirements}
+    \input{Sections/Introduction/Objectives and Requirments/Objectives and Requirments.tex}
 
-\subsection{Objectives and Requirements}
-\input{Sections/Introduction/Objectives and Requirments/Objectives and Requirments.tex}
-
-\subsection{Contributions}
-\input{Sections/Introduction/Contributions/Contributions.tex}
+    \subsection{Contributions}
+    \input{Sections/Introduction/Contributions/Contributions.tex}
 
 \clearpage
 \section{Background}
 
-\subsection{Trajectory Generation}
-\input{Sections/BackGround/Trajectory Generation/Trajectory Generation.tex}
+    \subsection{Trajectory Generation}
+    \input{Sections/BackGround/Trajectory Generation/Trajectory Generation.tex}
 
-\subsection{Trajectory Optimization}
-\input{Sections/BackGround/Trajectory Optimization/Trajectory Optimization.tex}
+    \subsection{Trajectory Optimization}
+    \input{Sections/BackGround/Trajectory Optimization/Trajectory Optimization.tex}
 
-\subsection{Motion Control}
-\input{Sections/BackGround/Motion Control/Motion Control.tex}
+    \subsection{Motion Control}
+    \input{Sections/BackGround/Motion Control/Motion Control.tex}
 
-\subsection{Numerical Solver}
-\subsubsection{CasADi}
-\input{Sections/BackGround/Numerical Solver/Casadi.tex}
+    \subsection{Numerical Solver}
+    \subsubsection{CasADi}
+    \input{Sections/BackGround/Numerical Solver/Casadi.tex}
 
-\subsubsection{Initial Guess}
-\input{Sections/BackGround/Numerical Solver/Initial guess.tex}
+    \subsubsection{Initial Guess}
+    \input{Sections/BackGround/Numerical Solver/Initial guess.tex}
 
-\subsection{Space Robotics}
-\input{Sections/BackGround/Space Robots.tex}
-
-
+    \subsection{Space Robotics}
+    \input{Sections/BackGround/Space Robots.tex}
 
 
 \clearpage
 \section{State of the Art}
-\input{Sections/State of the Art/Payload Transportation.tex}
+    \input{Sections/State of the Art/Payload Transportation.tex}
 
 \clearpage
 \section{Proposed Approach}
 
-\subsection{Dynamical Model}
-\input{Sections/Proposed Approach/Motion Model.tex}
+    \subsection{Dynamical Model}
+    \input{Sections/Proposed Approach/Motion Model.tex}
 
-\subsection{SpaceCobot}\label{sec:Proposed Approach: Space Cobot}
+    \subsection{SpaceCobot}\label{sec:Proposed Approach: Space Cobot}
+    \input{Sections/Proposed Approach/Space Cobot.tex}
 
-\input{Sections/Proposed Approach/Space Cobot.tex}
 
-\subsection{Trajectory Generation}
-
-\subsection{Motion Control}
     \subsection{Simulation Environment}
-\textcolor{blue}{Discuss the simulation environment used, including its advantages and limitations, such as the lack of orbital dynamics and microgravity.}
+    \input{Sections/Proposed Approach/Simulator.tex}
 
-\input{Sections/Proposed Approach/Simulator.tex}
+    \subsection{Real-World Environment}
+    \input{Sections/Proposed Approach/Real World.tex}
 
-\subsection{Real-World Environment}
-\input{Sections/Proposed Approach/Real World.tex}
+    \subsection{Trajectory Generation}
+    \input{Sections/Proposed Approach/Reference Trajectory.tex}
+
+    \subsection{Motion Control}
+    \input{Sections/Proposed Approach/Controler.tex}
 
 \clearpage
 \section{Preliminary Results}
@@ -164,8 +163,7 @@
 
 \clearpage
 \section{Work Plan}
-\textcolor{blue}{Explain what remains to be done for a fully functional robot, the priority of each missing step, and how to achieve them.}
-
+\input{Sections/Work Plan/Work plan.tex}
 % Bibliography
 \nocite{*} % Include all references
 \printbibliography[heading=bibintoc]

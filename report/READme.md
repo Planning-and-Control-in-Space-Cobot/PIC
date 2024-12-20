@@ -16,9 +16,16 @@ README for the PIC report updates. Whenever a new section is written this file w
 
 > Proposed Approach
 > - [x] Dynamic equations
+>> - [x] Single robot dynamics
+>> - [x] Multiple Robot dynamics
 >> - [x] Space Cobot Specific data
 > - [x] Simulator
 > - [x] Real world test data
+> - [x] Trajectory generation
+> - [x] Motion Control
+
+> Work Plan 
+> - [ ] Gantt Chart
 
 ### To do:
 > Introduction 
@@ -30,11 +37,9 @@ README for the PIC report updates. Whenever a new section is written this file w
 > State of the Art
 > - [ ] Cooperative Payload transportation
 
+> Expected Results
+> - [ ] Analysis of expected results
+
 > Proposed Approach
-> - [ ] Trajectory generation
-> - [ ] Motion Control
 
 
-
-> Work Plan 
-> - [ ] Gantt Chart
