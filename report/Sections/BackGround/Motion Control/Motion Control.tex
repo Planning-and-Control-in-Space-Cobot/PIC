@@ -2,7 +2,7 @@ In this section, we provide the necessary background from a control theory persp
 
 \subsubsection{Optimization Problems}
 
-An optimization problem is defined as the task of determining the best, or optimal, solution among all feasible solutions while adhering to a set of constraints. This process typically involves minimizing an objective function, often referred to as the cost function in specific applications. For cases where maximization is desired, the problem can be reformulated to minimize the negative of the cost function.
+An optimization problem is defined as the task of determining the best, or optimal, solution among all feasible solutions while adhering to a set of constraints. This process typically involves minimizing an objective function, often referred to as the cost function in specific applications. For cases where maximization is desired, the problem needs to be reformulated to minimize the negative of the cost function.
 
 The general formulation of an optimization problem is presented in Equation \ref{eq:optimization_problem}, where \( f(x) \) is the cost function, \( x \) represents the decision variables, \( e_i(x) \) denotes equality constraints, and \( g_j(x) \) signifies inequality constraints. This formulation employs hard constraints, meaning that all constraints must be satisfied at all times. However, rigid enforcement of hard constraints can render the problem infeasible under certain conditions. To address this, soft constraints can be introduced by augmenting the cost function with penalty terms, as shown in Equation \ref{eq:optimization_problem_with_soft_constraint}. Here, \( sc(x) \) represents the penalty for constraint violation.
 
@@ -10,8 +10,9 @@ The general formulation of an optimization problem is presented in Equation \ref
     \begin{equation}
         \begin{aligned}
             &\underset{x}{\text{minimize}} \quad f(x) \\
-            &\text{subject to } \quad e_i(x) = 0, \quad i = 1, \dots, m, \\
-            &\quad \quad \quad \quad \, g_j(x) \geq 0, \quad j = 1, \dots, p.
+            &\text{subject to }  \\
+            &\quad \quad e_i(x) = 0, \quad i = 1, \dots, m, \\
+            &\quad \quad \, g_j(x) \geq 0, \quad j = 1, \dots, p.
         \end{aligned}
         \label{eq:optimization_problem}
     \end{equation}
@@ -21,8 +22,9 @@ The general formulation of an optimization problem is presented in Equation \ref
     \begin{equation}
         \begin{aligned}
             &\underset{x}{\text{minimize}} \quad f(x) + sc(x) \\
-            &\text{subject to} \quad e_i(x) = 0, \quad i = 1, \dots, m, \\
-            &\quad \quad \quad \quad \, g_j(x) \geq 0, \quad j = 1, \dots, p.
+            &\text{subject to}\\
+            &\quad \quad e_i(x) = 0, \quad i = 1, \dots, m, \\
+            &\quad \quad \, g_j(x) \geq 0, \quad j = 1, \dots, p.
         \end{aligned}
         \label{eq:optimization_problem_with_soft_constraint}
     \end{equation}
@@ -51,7 +53,9 @@ The internal mechanism of Model Predictive Control (MPC) systems, whether linear
         \begin{aligned}
             &\underset{u(\cdot) \in  \mathbb{U}^{N}(x_{0})}{\text{minimize}} \quad J_{N}(x_{0}, u(\cdot)) = \sum_{k=0}^{N-1} l(x_u(k, x_0), u(k)) \\
             &\text{subject to} \quad x_u(0, x_0) = x_0, \\
-            &\quad \quad \quad \quad x_u(k+1, x_0) = f(x_u(k, x_0), u(k)).
+            &\quad \quad \quad \quad x_u(k+1, x_0) = f(x_u(k, x_0), u(k)) \\
+            &\quad \quad \quad \quad x(k), \in \mathbb{U} \quad k = 0, \dots, N-1\\
+            &\quad \quad \quad \quad u(k) \in \mathbb{U}, \quad k = 0, \dots, N-1.
         \end{aligned}
         \label{eq:mpc_optimization_problem}
     \end{equation}
@@ -59,3 +63,9 @@ The internal mechanism of Model Predictive Control (MPC) systems, whether linear
 \end{itemize}
 
 NMPC systems often consider two types of horizons, as discussed in \cite{schwenzer2021review}: the \textit{prediction horizon} \( N_p \), where future system dynamics are simulated, and the \textit{control horizon} \( N_c \), where optimal control inputs are computed. For simplicity, we assume \( N_c = N_p \). If \( N_c < N_p \), the control input is held constant for the remaining steps.
+
+\paragraph{Real time iteration scheme} first proposed ix~\cite{diehl2002real}, is a common way to reduce the time taken in the controller, making it easier to run in a real time, where sometimes the max computation time is in the order of milliseconds. In this schema we compute only 1 SQP iteration per time step, and divided computation into two different phases, preparation and feedback. All operation that are not depended on the knowledge of the current state, are included in the preparation phase, since they can be executed offline, reducing the load during the online phase. The feedback phase starts when we measure the current state, we then construct the QP problem and solved it, receive as solution not the u and x, but rather us a $\Delta u$ and $\Delta x$. With this we can compute the control input as $u = u_{guess} + \Delta u$, where the $u_{guess}$ is the initial guess passed to the solver, we then apply this value for a certain time interval, during which the preparation phase is being executed as per~\cite{diehl2005real}. We then use the current $x$ and $u$ as the next iteration phase initial guess, reducing the cost of the next iteration. 
+
+\subsubsection{Distributed NMPC}
+
+Distributed NMPC is an extension of NMPC~\cite{muller2013distributed}, where a large complex problem is decomposed into multiple smaller subproblems that can be solved individually. Each individual controller solves its local problem while coordinating with others to ensure consensus is reached for the values of global variables. This approach is particularly useful in multi-agent systems, where each agent solves its own problem while the global problem is addressed through coordination and consensus. By solving multiple smaller problems instead of one large problem, the computational burden is reduced, although the overall architecture becomes more complex. Consensus is typically achieved by computing the average of shared variables and using this new value as the start value for the next iteration, with convergence determined when the maximum difference between the variables and the average falls below a certain threshold. The Alternating Direction Method of Multipliers (ADMM)~\cite{boyd2011distributed} is commonly used to facilitate this consensus by iteratively solving local subproblems and enforcing consistency through penalty terms and dual variable updates.

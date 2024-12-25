@@ -1,6 +1,6 @@
 Motion planning is a fundamental area of research, focusing on algorithms that determine how a vehicle, denoted as $\mathcal{R}$, can move optimally from a starting point $B$ to an endpoint $C$. To delve into this topic, it is essential to distinguish between \textit{path planning} and \textit{trajectory planning}. A \textbf{path} is a sequence of points describing how to travel from one place to another, without considering time. In contrast, a \textbf{trajectory} specifies both the path and the timing of the motion, incorporating the dynamics of the vehicle~\cite{wolek2017model}.
 
-In~\cite{lavalle2006planning}, a mathematical framework for motion planning is presented. Here, we define the configuration space $\mathcal{C}$ as the set of all possible configurations of an agent $\mathcal{R}$ moving in an environment $\mathcal{W} = \mathbb{R}^3$ with a set of obstacles $\mathcal{O} = \{\mathcal{O}^1, \dots, \mathcal{O}^N\}$. The configuration of the agent is represented as $h = (x_t, y_t, z_t, q)$, where $q$ denotes the orientation of the agent in quaternion form.
+In~\cite{lavalle2006planning}, a mathematical framework for motion planning is presented. Here, we define the configuration space $\mathcal{C}$ as the set of all possible configurations of an agent $\mathcal{R}$ moving in an environment $\mathcal{W} = \mathbb{R}^3$ with a set of obstacles $\mathcal{O} = \{\mathcal{O}^1, \dots, \mathcal{O}^N\}$. The configuration of the agent is represented as $h = (x_t, y_t, z_t, q_t)$, where $q$ denotes the orientation of the agent in quaternion form~\cite{trawny2005indirect}.
 
 The \textbf{obstacle space}, $\mathcal{C}_{\text{obs}} \subseteq \mathcal{C}$, includes all configurations where the agent intersects with obstacles:
 \[
@@ -8,7 +8,7 @@ The \textbf{obstacle space}, $\mathcal{C}_{\text{obs}} \subseteq \mathcal{C}$, i
 \]
 The remaining configurations form the \textbf{free space}, $\mathcal{C}_{\text{free}} = \mathcal{C} \setminus \mathcal{C}_{\text{obs}}$, where the agent can move without collisions.
 
-The problem becomes more complex when the robot consists of multiple bodies. In such cases, we must avoid collisions with obstacles as well as between the robot's parts. Instead of a single agent, the robot is modeled as a set of agents $\{\mathcal{A}_1, \dots, \mathcal{A}_m\}$. To prevent internal collisions, we define a set of collision pairs $\mathcal{P}$, where $(i, j) \in \mathcal{P}$ represents possible collisions between $\mathcal{A}_i$ and $\mathcal{A}_j$, with $i \neq j$.
+The problem becomes more complex when the robot is composed by multiple bodies. In such cases, we must avoid collisions with obstacles as well as between the robot's bodies. Instead of a single agent, the robot is modeled as a set of agents $\{\mathcal{A}_1, \dots, \mathcal{A}_m\}$. To prevent internal collisions, we define a set of collision pairs $\mathcal{P}$, where $(i, j) \in \mathcal{P}$ represents possible collisions between $\mathcal{A}_i$ and $\mathcal{A}_j$, with $i \neq j$.
 
 The extended obstacle space accounts for both external and internal collisions:
 \[
@@ -19,7 +19,7 @@ With this formulation, the task of motion planning is to compute a trajectory th
 
 \subsubsection{Motion Planning Algorithms}
 
-The scheme in Figure~\ref{fig:background:trajectory generation:motion planning algorithms}, adapted from \cite{InesBatista2022Thesis}, illustrates a collection of motion planning algorithms, explaining their mechanisms along with their main advantages and disadvantages. In this work, we focus on a few search-based methods, specifically Dijkstra’s algorithm, $A^{*}$, and $D^{*}$. Additionally, from the sampling-based group, we examine RRT and its variations, as well as PRM.
+The scheme in Figure~\ref{fig:background:trajectory generation:motion planning algorithms}, adapted from \cite{InesBatista2022Thesis}, illustrates a collection of motion planning algorithms. In this work, we focus on a few search-based methods, specifically Dijkstra’s algorithm, $A^{*}$, and $D^{*}$. Additionally, from the sampling-based group, we examine RRT and its variations, as well as PRM.
 
 \begin{figure}[H]
     \centering
@@ -28,11 +28,11 @@ The scheme in Figure~\ref{fig:background:trajectory generation:motion planning a
     \label{fig:background:trajectory generation:motion planning algorithms}
 \end{figure}
 
-\paragraph{Search-Based Methods}
+\paragraph{Decomposition based Methods}
 
-Search-based algorithms~\cite{latombe2012robot} partition the free configuration space $\mathcal{C}_{\text{free}}$ into a finite number of cells. From this, a connectivity graph $G = (V, E)$ is constructed, where the vertices $V$ represent the cells, and the edges $E$ denote adjacency relationships between the cells. Using this graph, standard graph search algorithms such as Dijkstra’s algorithm~\cite{dijkstra2022note}, $A^{*}$~\cite{A-start-original}, and $D^{*}$ can be employed to find a path.
+Decomposition based algorithms~\cite{latombe2012robot} partition the free configuration space $\mathcal{C}_{\text{free}}$ into a finite number of cells. From this, a connectivity graph $G = (V, E)$ is constructed, where the vertices $V$ represent the cells, and the edges $E$ denote adjacency relationships between the cells. Using this graph, standard graph search algorithms such as Dijkstra’s algorithm~\cite{dijkstra2022note}, $A^{*}$~\cite{A-start-original}, and $D^{*}$ can be employed to find a path.
 
-These algorithms guarantee optimality in discrete spaces. However, the computational cost grows quadratically with the size of the search space, making them impractical for high-dimensional or complex environments where computational demands can become prohibitive.
+These algorithms guarantee optimally in discrete spaces. However, the computational cost grows quadratically with the size of the search space, making them impractical for high-dimensional or complex environments where computational demands can become prohibitive.
 
 \paragraph{Sampling-Based Methods}
 
@@ -40,7 +40,7 @@ Sampling-based methods have gained significant attention in recent years for sol
 
 \subparagraph{Probabilistic Roadmaps (PRM)} 
 
-PRM~\cite{PRM508439} is a multiple-query algorithm that constructs a roadmap starting from an empty graph $G = (N, E)$. New random configurations, $h_{\text{rand}}$, are added to the set of nodes $N$. If a collision-free path exists between $h_{\text{rand}}$ and its closest neighbors in $N$, edges are added to $E$. This process continues until a termination condition (e.g., time limit or number of configurations) is reached. The resulting graph can then be used with sampling-based algorithms to solve various motion planning queries. While PRM enables exploration of large configuration spaces efficiently, it is not complete but probabilistically complete, and the solution quality depends heavily on the number of samples and neighbors considered.
+PRM~\cite{PRM508439} is a multiple-query algorithm that constructs a roadmap starting from an empty graph $G = (N, E)$. New random configurations, $h_{\text{rand}}$, are added to the set of nodes $N$. If a collision-free path exists between $h_{\text{rand}}$ and its closest neighbors in $N$, edges are added to $E$. This process continues until a termination condition (e.g., time limit or number of configurations) is reached. The resulting graph can then be used with graph-search algorithms to solve various motion planning queries. While PRM enables exploration of large configuration spaces efficiently, it is not complete but probabilistically complete, and the solution quality depends heavily on the number of samples and neighbors considered.
 
 \subparagraph{Rapidly-Exploring Random Trees (RRT)} 
 

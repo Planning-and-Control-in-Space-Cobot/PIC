@@ -2,12 +2,12 @@
 
 % Packages
 \usepackage{csquotes}
-\usepackage{biblatex}
+\usepackage[sorting=none]{biblatex}
 \addbibresource{main.bib}
 
 \usepackage{booktabs}
 \usepackage[table]{xcolor}
-\usepackage{hyperref}
+\usepackage{hyperref}  % Ensure hyperref is loaded
 \usepackage{tikz}          % For legend squares
 \usepackage[abbreviations,symbols]{glossaries-extra}
 \setabbreviationstyle{long-short}
@@ -22,7 +22,12 @@
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage{graphicx} % For \resizebox
+\usepackage{wrapfig}
 \usepackage{threeparttable} % For footnotes below table
+\usepackage{graphicx}
+\usepackage{xparse}
+\usepackage{etoolbox}
+
 
 \usetikzlibrary{positioning,arrows.meta}
 
@@ -34,53 +39,67 @@
 \definecolor{ist-gray}{cmyk}{0.2,0,0,0.8}
 
 % Metadata
-\newcommand{\ttitle}{Cooperative Payload Transportation using Multiple Space Cobots in Microgravity Environment}
-\newcommand{\tsubtitle}{}
+% Define booleans
+\newbool{@english}
+\setboolean{@english}{true} % Set to false for Portuguese
+\newcommand{\ttitle}{Planning and control of a multi-robot free-flyer system}
 \newcommand{\tauthor}{André Rebelo Teixeira}
-\newcommand{\tdegree}{Master in Electrical and Computer Engineering}
-\newcommand{\tsupervisor}{Prof. Rodrigo Martins de Matos Ventura}
-\newcommand{\tdate}{November 2024}
-\newcommand{\tinstitution}{Instituto Superior Técnico}
+\newcommand{\tdegree}{Eletrical and Computer Engineering}
+\newcommand{\tsupervisor}{Prof. Rodrigo Martins de Matos Ventura }
+\newcommand{\tchairperson}{Loren Ipsum } 
+\newcommand{\tcommittee}{Loren Ipsum}
+\newcommand{\tdate}{December 2024}
+\newcommand{\tcoverimagewidth}{.60} % Width as a fraction of the linewidt
 
-% Cover Page Command
-\newcommand{\makecover}{
-    \pagenumbering{gobble} % Suppress page numbering
-    \begin{titlepage}
-        \centering
-        \includegraphics[scale=0.29]{IST_A_CMYK_POS} % Adjust to your IST logo
-        \vspace{2cm}
-        
-        % Title
-        {\LARGE\bfseries \ttitle \par}
-        \vspace{0.5cm}
-        {\Large \tsubtitle \par}
-        \vspace{1.5cm}
-        
-        % Author
-        {\Large \textbf{\tauthor} \par}
-        \vspace{1cm}
-        
-        % Degree
-        {\large Thesis to obtain the Master of Science Degree in \par}
-        {\Large\textbf{\tdegree} \par}
-        \vspace{1cm}
-        
-        % Supervisor
-        {\large
-        \begin{tabular}{rl}
-            Supervisor: & \tsupervisor
-        \end{tabular} \par}
-        \vspace{2cm}
-        
-        % Institution and Date
-        {\large \tinstitution \par}
-        \vspace{0.5cm}
-        {\large \tdate \par}
-    \end{titlepage}
-    \clearpage
-    \pagenumbering{arabic} % Reset page numbering
+\newrobustcmd{\makecover}{
+    \vspace{-2cm}
+	\pagenumbering{arabic}
+	\setcounter{page}{0}
+	\begin{titlepage}
+	\includegraphics[viewport=9.5cm 11cm 0cm 0cm,scale=0.29]{IST_A_CMYK_POS}
+	\begin{center}
+		\vspace*{17mm}
+		\includegraphics[width=\tcoverimagewidth\linewidth]{Images/cover_image.jpeg}
+		\par\vspace{\fill}
+		{\LARGE\bfseries \ttitle}
+		\par\vspace{10mm}
+		{\Large\bfseries
+			\begin{tabular}{c c}
+				&\tauthor
+			\end{tabular}
+		}
+		\par\vspace{10mm}
+		\ifbool{@english}
+			{\large Thesis to obtain the Master of Science Degree in}
+			{\large Dissertação para obtenção do Grau de Mestre em}
+		\par\medskip
+		{\LARGE\bfseries \tdegree}
+		\par\vspace{10mm}
+		{\large\renewcommand\arraystretch{0.9}
+			\begin{tabular}{r l}
+				\ifbool{@english}{Supervisor:}{Orientador:} & \tsupervisor
+			\end{tabular}
+		}
+		\par\vspace{7mm}
+		{\large\bfseries \ifbool{@english}{Examination Committee}{Júri}}
+		\par\vspace{3mm}{\large\renewcommand\arraystretch{0.9}
+			\begin{tabular}{r l}
+				\ifbool{@english}
+					{Chairperson:}{Presidente:}				& \tchairperson{}		\\
+				\ifbool{@english}
+					{Supervisor:}{Orientador:}				& \tsupervisor{}		\\
+				\ifbool{@english}
+					{Members of the Committee:}{Vogais:}	& \tcommittee{}
+			\end{tabular}
+		}
+		\par\vspace{10mm}
+		{\large\bfseries \tdate{}}
+	\end{center}
+	\cleardoublepage
+	\end{titlepage}
 }
 
+% Cover Page Command
 % Document
 \begin{document}
 
@@ -95,75 +114,95 @@
 \clearpage
 \section{Introduction}
     \subsection{Motivation}
+    \label{sec:Introduction:Motivation}
     \input{Sections/Introduction/Motivation/Motivation.tex}
 
     \subsection{Problem Definition}
+    \label{sec:Introduction:Problem Definition}
     \input{Sections/Introduction/Problem Definition/ProblemDefiniton.tex}
 
     \subsection{Objectives and Requirements}
+    \label{sec:Introduction:Objectives and Requirments}
     \input{Sections/Introduction/Objectives and Requirments/Objectives and Requirments.tex}
 
-    \subsection{Contributions}
+    \subsection{Expected Contributions}
+    \label{sec:Introduction:Contributions}
     \input{Sections/Introduction/Contributions/Contributions.tex}
 
 \clearpage
 \section{Background}
-
     \subsection{Trajectory Generation}
+    \label{sec:Background:Trajectory Generation}
     \input{Sections/BackGround/Trajectory Generation/Trajectory Generation.tex}
 
     \subsection{Trajectory Optimization}
+    \label{sec:Background:Trajectory Optimization}
     \input{Sections/BackGround/Trajectory Optimization/Trajectory Optimization.tex}
 
     \subsection{Motion Control}
+    \label{sec:Background:Motion Control}
     \input{Sections/BackGround/Motion Control/Motion Control.tex}
 
     \subsection{Numerical Solver}
     \subsubsection{CasADi}
+    \label{sec:Background:Numerical Solver:Casadi}
     \input{Sections/BackGround/Numerical Solver/Casadi.tex}
 
     \subsubsection{Initial Guess}
+    \label{sec:Background:Numerical Solver:Initial guess}
     \input{Sections/BackGround/Numerical Solver/Initial guess.tex}
 
     \subsection{Space Robotics}
+    \label{sec:Background:Space Robots}
     \input{Sections/BackGround/Space Robots.tex}
 
 
 \clearpage
 \section{State of the Art}
+    \label{sec:State of the Art:Payload Transportation}
     \input{Sections/State of the Art/Payload Transportation.tex}
 
 \clearpage
 \section{Proposed Approach}
 
     \subsection{Dynamical Model}
+    \label{sec:Proposed Approach:Motion Model}
     \input{Sections/Proposed Approach/Motion Model.tex}
 
-    \subsection{SpaceCobot}\label{sec:Proposed Approach: Space Cobot}
+    \subsection{SpaceCobot}
+    \label{sec:Proposed Approach: Space Cobot}
     \input{Sections/Proposed Approach/Space Cobot.tex}
 
+    \subsection{System Architecture}
+    \label{sec:Proposed Approach:System Architecture}
+    \input{Sections/Proposed Approach/System Architecture.tex}
+
+    \subsubsection{Trajectory Generation}
+    \label{sec:Proposed Approach:Reference Trajectory}
+    \input{Sections/Proposed Approach/Reference Trajectory.tex}
+
+    \subsubsection{Motion Control}
+    \label{sec:Proposed Approach:Controler}
+    \input{Sections/Proposed Approach/Controler.tex}
 
     \subsection{Simulation Environment}
+    \label{sec:Proposed Approach:Simulator}
     \input{Sections/Proposed Approach/Simulator.tex}
 
     \subsection{Real-World Environment}
+    \label{sec:Proposed Approach:Real World}
     \input{Sections/Proposed Approach/Real World.tex}
 
-    \subsection{Trajectory Generation}
-    \input{Sections/Proposed Approach/Reference Trajectory.tex}
-
-    \subsection{Motion Control}
-    \input{Sections/Proposed Approach/Controler.tex}
-
+    
 \clearpage
-\section{Preliminary Results}
-
-\subsection{Simulation Results}
-\textcolor{blue}{Show results obtained during the project, including trajectory generation and path-following results using one and multiple robots.}
+\section{Expected Results}
+    \label{sec:Results:Expected Results}
+    \input{Sections/Results/Expected Results.tex}
 
 \clearpage
 \section{Work Plan}
-\input{Sections/Work Plan/Work plan.tex}
+    \label{sec:Work Plan}
+    \input{Sections/Work Plan/Work plan.tex}
 % Bibliography
 \nocite{*} % Include all references
 \printbibliography[heading=bibintoc]

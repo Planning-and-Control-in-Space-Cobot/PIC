@@ -50,3 +50,4 @@ thumbs/
 !*.bib
 !Makefile
 
+.vscode/

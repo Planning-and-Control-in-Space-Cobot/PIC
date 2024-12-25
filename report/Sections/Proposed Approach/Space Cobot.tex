@@ -71,3 +71,51 @@ Propeller (\(i\)) & 0  & 1   & 2   & 3    & 4   & 5   \\ \hline
 \label{tab:Proposed Aproach: Space Cobot Motor and propeller configuration}
 \end{table}
 
+To accurately model the relationship between the input signal \( u \) (rad/s, radians per second) and the resulting thrust and torque, real-world data from both the motor and the propeller were required. To obtain this data, a test bench, as depicted in Figure~\ref{fig:Proposed Approach:Simulator:Testbench}, was constructed. This setup enabled precise measurements of thrust and torque as functions of motor speed in realistic conditions. Consequently, we achieved a significantly more accurate propeller model compared to the theoretical equation proposed in \cite{martin2010true}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/Propposed Aproach/TestBench.jpeg}
+    \caption{Test bench used to measure the thrust and torque of the propeller.}
+    \label{fig:Proposed Approach:Simulator:Testbench}
+\end{figure}
+
+To realize a fully holonomic robot with only six motors and propellers, it was necessary to utilize a combo of motors and ESC (electronic speed controller) capable of bidirectional operation. For the Space Cobot, this means that a CCW (counter-clockwise) propeller must also operate in the CW (clockwise) direction. While it is known that performance typically degrades when operating in the "wrong" direction, we simplified our model by post-processing the data to eliminate this loss of performance. The resulting thrust and torque curves are shown in Figure~\ref{fig:Proposed Approach:Simulation:MotorData}.
+
+\begin{figure}[H]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{Images/Propposed Aproach/thrust_vs_motor_speed.png}
+        \caption{Thrust vs. motor speed.}
+        \label{fig:proposed_approach_simulation_motor_data_thrust}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{Images/Propposed Aproach/torque_vs_motor_speed_CW_CCW.png}
+        \caption{Torque vs. motor speed (CW and CCW).}
+        \label{fig:proposed_approach_simulation_motor_data_torque}
+    \end{subfigure}
+    \caption{Thrust and torque data as functions of motor speed.}
+    \label{fig:Proposed Approach:Simulation:MotorData}
+\end{figure}
+
+Upon analyzing the relationships between thrust and motor speed, as well as torque and motor speed, it became evident that a third-order polynomial provides the best fit. This conclusion is supported by the error metrics shown in Figure~\ref{fig:Proposed Approach:Simulation:FittingErrors}. The third-order fit achieves a substantial reduction in error compared to simpler models. Furthermore, higher-order models, such as the fourth-order fit, do not yield noticeable improvements. Specifically, the fourth-order fit effectively reduces to a third-order fit, with the fourth-order coefficient equating to zero, thus adding unnecessary complexity.
+
+\begin{figure}[H]
+    \begin{subfigure}{0.5\textwidth} 
+        \centering
+        \includegraphics[width=0.9\textwidth]{Images/Propposed Aproach/thrust_errors.png}
+        \caption{Thrust MSE between real data and fitted data.}
+        \label{fig:Proposed Approach:Simulation:ThrustErrors}
+    \end{subfigure} 
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{Images/Propposed Aproach/torque_errors.png}
+        \caption{Torque MSE between real data and fitted data.}
+        \label{fig:Proposed Approach:Simulation:TorqueErrors}
+    \end{subfigure}
+    \caption{Mean Squared Error (MSE) between the real data and the fitted curves.}
+    \label{fig:Proposed Approach:Simulation:FittingErrors}
+\end{figure}
