@@ -4,15 +4,15 @@ In~\cite{lavalle2006planning}, a mathematical framework for motion planning is p
 
 The \textbf{obstacle space}, $\mathcal{C}_{\text{obs}} \subseteq \mathcal{C}$, includes all configurations where the agent intersects with obstacles:
 \[
-\mathcal{C}_{\text{obs}} = \{ h \in \mathcal{C} \mid A(h) \cap \mathcal{O} \neq \emptyset \}.
+\mathcal{C}_{\text{obs}} = \{ h \in \mathcal{C} \mid \mathcal{R}(h) \cap \mathcal{O} \neq \emptyset \}.
 \]
 The remaining configurations form the \textbf{free space}, $\mathcal{C}_{\text{free}} = \mathcal{C} \setminus \mathcal{C}_{\text{obs}}$, where the agent can move without collisions.
 
-The problem becomes more complex when the robot is composed by multiple bodies. In such cases, we must avoid collisions with obstacles as well as between the robot's bodies. Instead of a single agent, the robot is modeled as a set of agents $\{\mathcal{A}_1, \dots, \mathcal{A}_m\}$. To prevent internal collisions, we define a set of collision pairs $\mathcal{P}$, where $(i, j) \in \mathcal{P}$ represents possible collisions between $\mathcal{A}_i$ and $\mathcal{A}_j$, with $i \neq j$.
+The problem becomes more complex when the robot is composed by multiple bodies. In such cases, we must avoid collisions with obstacles as well as between the robot's bodies. Instead of a single body agent, we now must consider each individual body as an agent $\{\mathcal{A}_1, \dots, \mathcal{A}_m\}$ and they specific configuration  $\{ h_1, \dots, h_m \}$. To prevent internal collisions, we define a set of collision pairs $\mathcal{P}$, where $(i, j) \in \mathcal{P}$ represents possible collisions between $\mathcal{A}_i$ and $\mathcal{A}_j$, with $i \neq j$.
 
 The extended obstacle space accounts for both external and internal collisions:
 \[
-\mathcal{C}_{\text{obs}} = \left( \bigcup_{i=1}^m \{h \in \mathcal{C} \mid \mathcal{A}_i(h) \cap \mathcal{O} \neq \emptyset\} \right) \cup \left( \bigcup_{(i, j) \in \mathcal{P}} \{h \in \mathcal{C} \mid \mathcal{A}_i(h) \cap \mathcal{A}_j(h) \neq \emptyset\} \right).
+\mathcal{C}_{\text{obs}} = \left( \bigcup_{i=1}^m \{h \in \mathcal{C} \mid \mathcal{R}_i(h) \cap \mathcal{O} \neq \emptyset\} \right) \cup \left( \bigcup_{(i, j) \in \mathcal{P}} \{h \in \mathcal{C} \mid \mathcal{R}_i(h) \cap \mathcal{R}_j(h) \neq \emptyset\} \right).
 \]
 
 With this formulation, the task of motion planning is to compute a trajectory that connects the initial configuration to the goal configuration within $\mathcal{C}_{\text{free}}$.
@@ -50,7 +50,7 @@ To address this, Bidirectional RRT was developed, where two trees are constructe
 
 \paragraph{Artifical potential fields} (APF) \cite{khatib1985real}, is an approach that uses a potential field to guide the robot towards the goal while avoiding obstacles. To do this, we modelate the goals as being an atractive force, whilest making the obstacles, repulsive force. The sum of forces, the potential, is then the correct direction for the robot to move in. This method is simple and computational efficient, but it can get stuck in local minima, and it there for is not complete, to solve this problem, one can use harmonic potential functions as in \cite{kim1992real,rimon1990exact}.
 
-
+In table~\ref{tab:path_planning_algorithms}, we summarize the characteristics of the path planning algorithms discussed in this section. Naturally, some algorithms can already be discarded as the computational cost is too high, this means the algorithm we are going to use latter in this work are the RRT and theirs derivations, as well as the APF method
 
 
 \begin{table}[h]

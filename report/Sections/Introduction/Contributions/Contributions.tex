@@ -1,9 +1,10 @@
 The contributions of this work are summarized as follows:
 
 \begin{itemize}
-    \item Development of a tunable distributed cooperative control algorithm for multiagent systems in payload transportation within a microgravity environment. The tunability includes the ability to adjust the model’s dynamic mode, controller rate, cost function modifications, and, when necessary, trajectory replanning.
-    \item Simulation testing of the cooperative algorithm and characterization of the system’s performance across multiple architectures.
+    \item Development of a tunable control algorithm for multiagent systems in payload transportation within a microgravity environment. The algorithm must be able to handle the uncertainties in the system and the lack of knowledge of the payload, as well as changes in the dynamic model that can be caused by the use of different robots.  
+    \item Development of a continuous trajectory planner that generates an optimal path between two points, considering system constraints, dynamic obstacles, and the uncertainty in the transported payload's properties, such as weight and distribution. 
+    \item Characterization of simulation results obtained under various system architectures, focusing on the performance, efficiency, and trade-offs between centralized and decentralized approaches.
     \item Real-world testing of the cooperative algorithm using an air-bearing table.
     \item A scientific paper that details the cooperative control algorithm as well as the relation with the trajectory planning and the results obtained with this work when compared to a baseline.
-    \item Creation of a GitHub Repository that houses all code and documentation necessary for testing and utilizing the materials developed throughout this work. \footnote{The organization can be accessed at https://github.com/Planning-and-Control-in-Space-Cobot.} \footnote{Please note that this work will be completed by October 31, 2025, meaning any early access to the link will not provide full content. Only open-source technologies used are currently available.}
+    \item Creation of a GitHub Repository that houses all code and documentation necessary for testing and utilizing the materials developed throughout this work. \footnote{The repository can be accessed at https://github.com/Planning-and-Control-in-Space-Cobot.} \footnote{Please note that this work will be completed by October 31, 2025, meaning any early access to the link will not provide full content. Only open-source technologies used are currently available.}
 \end{itemize}

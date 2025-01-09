@@ -11,7 +11,7 @@ The primary advantage of incorporating a feedback loop not only in the control p
 
 The feedback loops can be managed in two distinct ways: fixed time step or event-driven. In the fixed time step approach, the system checks whether the trajectory needs replanning after a predefined time interval. If replanning is required, the corresponding module updates the trajectory, and the system begins using the new reference. In the event-driven approach, trajectory replanning is triggered by specific events, such as obstacle detection or a drift between the reference and the actual position. 
 
-Both methods have advantages, but certain constraints must be met. If a previous stage utilizes a fixed time step, all subsequent stages must also follow a fixed time step. Additionally, the control algorithm always operates on a fixed time step. This results in the possibilities presented in \ref{tab:Proposed Approach: System Architechture}. The final configuration will be defined in the final report after additional testing to determine the optimal approach and establish a baseline for comparison.
+Both methods have advantages, but certain constraints must be met. If a previous stage utilizes a fixed time step, all subsequent stages must also follow a fixed time step. Additionally, the control algorithm always operates on a fixed time step. This results in the possibilities presented in table \ref{tab:Proposed Approach: System Architechture}. The final configuration will be defined in the final report after additional testing to determine the optimal approach and establish a baseline for comparison.
 
 \begin{table}[H]
     \centering
