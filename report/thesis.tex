@@ -98,16 +98,24 @@
 % Cover Page Command
 % Document
 \begin{document}
+\pgfplotsset{compat=1.18}
 
 % Cover Page
 \makecover
 
+\begin{abstract}
+    This work presents a novel approach for cooperative payload transportation in microgravity environments, focusing on the use of multiple free-flying robots. The primary goal is to enhance the efficiency and safety of payload movement within space modules, reducing the time and risks associated with manual transportation by astronauts. The proposed solution integrates advanced trajectory generation, optimization, and motion control techniques, employing a continuous planning system with a feedback loop to adapt in real-time to environmental changes. Key aspects of the approach include Nonlinear Model Predictive Control (NMPC) and distributed strategies to address the uncertainty in payload properties and dynamic changes. Through simulations and real-world testing, this research demonstrates the effectiveness and scalability of the system, contributing to the future of autonomous operations in space. The results offer valuable insights into optimizing robotic cooperation for complex tasks in microgravity, with potential applications in space exploration and station operations.
+    
+    \textbf{Keywords}: Cooperative Payload Transportation, Microgravity, Free-Flying Robots, Nonlinear Model Predictive Control (NMPC), Distributed Control, Trajectory Generation, Optimization, Space Robotics, Autonomous Operations, Continuous Planning.
+    \end{abstract}
+
+
 % Table of Contents
+\clearpage
 \tableofcontents
 \clearpage
 
 % Main Content
-\clearpage
 \section{Introduction}
     \subsection{Motivation}
     \label{sec:Introduction:Motivation}
@@ -152,15 +160,11 @@
     \label{sec:Background:Space Robots}
     \input{Sections/BackGround/Space Robots.tex}
 
-
-\clearpage
 \section{State of the Art}
     \label{sec:State of the Art:Payload Transportation}
     \input{Sections/State of the Art/Payload Transportation.tex}
 
-\clearpage
 \section{Proposed Approach}
-
     \subsection{Dynamical Model}
     \label{sec:Proposed Approach:Motion Model}
     \input{Sections/Proposed Approach/Motion Model.tex}
@@ -194,10 +198,15 @@
     \label{sec:Results:Expected Results}
     \input{Sections/Results/Expected Results.tex}
 
-\clearpage
 \section{Work Plan}
     \label{sec:Work Plan}
     \input{Sections/Work Plan/Work plan.tex}
+
+\section{Conclusions}
+    \label{sec:Conclusions}
+    \input{Sections/Conclusion/Conclusion.tex}
+
+
 % Bibliography
 \nocite{*} % Include all references
 \printbibliography[heading=bibintoc]

@@ -1,10 +1,10 @@
 \subsubsection{Single Robot Dynamics}
-In order to be able to comprehend the dynamics of the full system, with multiple robots and payload, we must first be able to understand the dynamics of a single freeflyer in a microgravity environment. We can derive the nonlinear dynamic equations of the system in with the Newton, referencing translation, and Euler, referencing rotation, equations. This can be seen in both \cite{RoqueVentura2016spacecobot}, the main difference to this work is the use of quaternion for the representation of attitude, instead of the rotation matrix. Making the new equations be \ref{eq:Proposed approach: Motion Model: Nonlinear dynamics}, where p, is the position of the robot, v is the velocity, q is the quaternion that represents the attitude of the robot, and $\omega$ is the angular velocity of the robot, this for variables constitute the state vector of the system, x= [p, v, q, $\omega$]. The system parameters here are J $\in \mathbb{R}^{3x3}$ is the inertia matrix of the robot, and m the mass of the robot.
+In order to be able to comprehend the dynamics of the full system, with multiple robots and payload, we must first be able to understand the dynamics of a single freeflyer in a microgravity environment. We can derive the nonlinear dynamic equations of the system in with the Newton, referencing translation, and Euler, referencing rotation, equations. This can be seen in both \cite{roque2016space}, the main difference to this work is the use of quaternion for the representation of attitude, instead of the rotation matrix. Making the new equations be \ref{eq:Proposed approach: Motion Model: Nonlinear dynamics}, written with relation to the robot Center of Mass (CoM), where p, is the position of the robot, v is the velocity, q is the quaternion that represents the attitude of the robot, and $\omega$ is the angular velocity of the robot, this for variables constitute the state vector of the system, x= [p, v, q, $\omega$]. The system parameters here are J $\in \mathbb{R}^{3x3}$ is the inertia matrix of the robot, and m the mass of the robot.
 
 \begin{equation}
     \begin{cases}
         &\dot{p} = v \\
-        &\dot{v} =m_i^{-1} R(q)F \\
+        &\dot{v} =\frac{1}{m_i} R(q)F \\
         &\dot{q} = \frac{1}{2}Q(q) \omega \\ 
         &\dot{\omega} = J^{-1} \left(M -\omega \times J\omega \right) 
     \end{cases}
@@ -24,7 +24,8 @@ The matrix R is the right-hand rotation matrix that converts from body frame to 
     \label{eq:Proposed approach: Motion Model: Q matrix}
 \end{equation}
 
-The vector M $\in \mathbb{R}^{3}$ is the torque applied in the robot, and F $\in \mathbb{R}^3$ is the force being applied. We can relate these to the system actuators according to \ref{eq:Proposed approach: Motion Model: Actuators}, where A is a matrix that converts from actuators space to torque and force space, and u in the actuation input vector of the system, meaning $u = \begin{bmatrix} u_{1} && \dots && u_{n} \end{bmatrix}^{T}$, where n is the number of actuators in the system and $u_{i}$ is the input of the i-th actuator. 
+The vector M $\in \mathbb{R}^{3}$ is the torque applied in the robot, and F $\in \mathbb{R}^3$ is the force being applied. We can relate these to the system actuators according to \ref{eq:Proposed approach: Motion Model: Actuators}, where A is a matrix that converts from actuators space to torque and force space, and u in the actuation input vector of the system, meaning $u = \left[u_{1} \dots  u_{n} \right]^{T}$, where n is the number of actuators in the system and $u_{i}$ is the input of the i-th actuator. 
+
 \begin{equation}
     \begin{pmatrix}
         F \\
@@ -44,25 +45,25 @@ The dynamics presented for a single robot are not valid for the full system, sin
     \label{fig:Proposed Approach: Motion Model: Multi Robot System}
 \end{figure}
 
-The dynamics of each robot in the formation will be as seen in equation \ref{eq:Proposed Approach:Motion Model: Multiple Robot Dynamics: Robot Dynamics}, where we can see the influence of the connection between the robot and the payload influence in the robot. The payload dynamics should also be considered,  we can see them in equation \ref{eq:Proposed Approach:Motion Model: Multiple Robot Dynamics: Payload Dynamics}, for both these equations the variables are defined in the following referential, $p_{i}$, $v_{i}$, $p_ {L}$, $v_{L}$, $T_{i}$ are in the inertial frame, $J_{i}$, $\omega_{i}$, $M_i$, $F_i$, $r_i$ are defined in the body frame of the i-th robot, and $J_{L}$, $\omega_{L}$, $q_L$ are defined in body frame of the payload. The matrices $R(q_{i})$ transforms from the i-th robot body frame to the inertial frame $\varepsilon$. The matrices $R(q_{i})^T$ and $R(q_{L})^T$ apply the transformation from inertial frame to the body frame of either the robot or the payload. And n in the number of robot's in the system.
+The dynamics of each robot in the formation will be as seen in equation \ref{eq:Proposed Approach:Motion Model: Multiple Robot Dynamics: Robot Dynamics}, where we can see the influence of the connection between the robot and the payload influence in the robot. The payload dynamics should also be considered,  we can see them in equation \ref{eq:Proposed Approach:Motion Model: Multiple Robot Dynamics: Payload Dynamics}, for both these equations the variables are defined in the following referential, $p_{i}$, $v_{i}$, $p_ {L}$, $v_{L}$, $T_{i}$ are in the inertial frame, $J_{i}$, $\omega_{i}$, $M_i$, $F_i$, $r_i$ are defined in the body frame of the i-th robot, and $J_{L}$, $\omega_{L}$, $q_L$ are defined in body frame of the payload. The matrices $R(q_{i})$ transforms from the i-th robot body frame to the inertial frame $\varepsilon$. The matrices $R(q_{i})^T$ and $R(q_{L})^T$ apply the transformation from inertial frame to the body frame of either the robot or the payload. And $N$ in the number of robots in the system.
 
 
 \begin{equation}
     \begin{cases}
-        \dot{p_i} &= v_{i} \\
-        \dot{v_i} &= m_i ^{-1}(R(q_i)F_i - T_i) \\
-        \dot{q_i} &= \frac{1}{2}Q(q) \omega_i \\
-        \dot{\omega_i} &=J^{-1}(M_i - \omega \times J \omega - r_i \times R(q_i)^T T_i)
+        \dot{p}_i &= v_{i} \\
+        \dot{v}_i &= \frac{1}{m_i}\left[R(q_i)F_i - T_i\right] \\
+        \dot{q}_i &= \frac{1}{2}Q(q) \omega_i \\
+        \dot{\omega}_i &=J^{-1}\left[M_i - \omega \times J \omega - r_i \times R(q_i)^T T_i\right]
     \end{cases}
     \label{eq:Proposed Approach:Motion Model: Multiple Robot Dynamics: Robot Dynamics}
 \end{equation}
 
 \begin {equation}
     \begin{cases}
-        \dot {p_{L}} &= v_{i} \\
-        \dot {v_{L}} &= m_{i}^{-1} \sum_{i = 1}^{n} T_{i} \\
-        \dot {q_{L}} &=  \frac{1}{2} Q(q) \omega_{L} \\
-        \dot{\omega_{L}} &= J_{L}^{-1} (-\omega_{L} \times J_{L} \omega_{L} + \sum_{i = 1}^{n} R_{i} \times (R(q_{L})^T T_{i}))
+        \dot {p}_{L} &= v_{i} \\
+        \dot {v}_{L} &= \frac{1}{m_{i}} \sum_{i = 1}^{N} T_{i} \\
+        \dot {q}_{L} &=  \frac{1}{2} Q(q) \omega_{L} \\
+        \dot{\omega_{L}} &= J_{L}^{-1} (-\omega_{L} \times J_{L} \omega_{L} + \sum_{i = 1}^{N} R_{i} \times \left[R(q_{L})^T T_{i}\right])
     \end{cases}
     \label{eq:Proposed Approach:Motion Model: Multiple Robot Dynamics: Payload Dynamics}
 \end{equation}
